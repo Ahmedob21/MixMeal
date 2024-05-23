@@ -111,9 +111,6 @@ namespace MixMeal.Controllers
             return View();
         }
 
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([Bind("Email,Upassword")] LoginViewModel userlogin)

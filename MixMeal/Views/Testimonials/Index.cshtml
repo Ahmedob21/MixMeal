@@ -1,0 +1,54 @@
+﻿@model IEnumerable<MixMeal.Models.Testimonial>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ucomment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Posteddate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cust)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Testimonialstatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ucomment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Posteddate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cust.Userid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Testimonialstatus.Statusid)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Testumonialid">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Testumonialid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Testumonialid">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

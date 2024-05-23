@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Testimonial>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="content">
+        <!-- For Components documentaion -->
+        <div class="row card-header justify-content-between">
+
+            <h2 class="col">Pending Testimonial</h2>
+            <a asp-action="Testimonials" class="mb-1 btn btn-primary col-2">Back</a>
+        </div>
+
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Cust.Username)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Ucomment)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Posteddate)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Testimonialstatus.Statusname)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                       
+                            <tr class="table-primary">
+
+                                <td scope="row"><a asp-action="CustomerDetails" asp-route-userid="@item.Custid">@item.Cust.Username</a></td>
+                                <td>@item.Ucomment</td>
+                                <td>@item.Posteddate</td>
+                            <td><a class="btn btn-sm btn-outline-success mr-4" asp-action="AcceptTestimonials" asp-route-id="@item.Testumonialid">Accept</a> <a class="btn btn-sm btn-outline-danger" asp-action="RejectTestimonials" asp-route-id="@item.Testumonialid">Reject</a></td>
+                            </tr>
+                     
+                        
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

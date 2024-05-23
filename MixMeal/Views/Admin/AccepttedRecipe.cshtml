@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Recipe>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="card card-default">
+    <div class="card-header row-12">
+        @* <div class="row "> *@
+            <div class="">
+             <h2>Recipes</h2>
+            </div>
+            <div class="">
+                <a asp-action="RecipeRequest" class="mb-1 btn btn-primary mr-2">Recipe Request</a>
+            <a asp-action="RejectedRecipe" class="mb-1 btn btn-primary ">Rejected Recipe </a>
+            </div>
+       @*  </div> *@
+    </div>
+
+
+    <div class="card-header row-12 justify-content-between">
+
+        <form asp-action="SearchByDate" class="form-inline">
+            <label class="sr-only" for="StartDate">Name</label>
+              <input type="date" class="form-control mb-2 mr-sm-2" name="StartDate" >
+            <label class="sr-only" for="EndDate">Username</label>
+              <div class="input-group mb-2 mr-sm-2">
+                
+                <input type="date" class="form-control" name="EndDate" >
+              </div>
+            <button type="submit" class="btn btn-primary btn-pill mb-2">search</button>
+           </form>
+
+        <form asp-action="SearchByName" class="form-inline">
+            <label class="sr-only" for="recipeName">Name</label>
+            <input type="text" class="form-control mb-2 mr-sm-2" id="recipeName" placeholder="Recipe Name">
+            <button type="submit" class="btn btn-primary btn-pill mb-2">search</button>
+        </form>
+
+    </div>
+
+
+
+
+    <div class="card-body">
+
+
+        <table  class="table table-hover table-product" style="width:100%">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Imagepath)</th>
+                    <th>@Html.DisplayNameFor(model => model.Recipename)</th>
+                    <th>@Html.DisplayNameFor(model => model.Category.Categoryname)</th>
+                    <th>@Html.DisplayNameFor(model => model.Chef.Firstname)</th>
+                    <th>@Html.DisplayNameFor(model => model.Recipestatus.Statusname)</th>
+                    <th>@Html.DisplayNameFor(model => model.Price)</th>
+                    <th>@Html.DisplayNameFor(model => model.Publishdate)</th>
+
+
+                    
+                </tr>
+            </thead>
+
+            <tbody>
+                <br />
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            <img src="~/image/RecipeImage/@item.Imagepath" alt="Product Image" width="150" height="180">
+                        </td>
+
+                        <td>@item.Recipename</td>
+                        <td>@item.Category.Categoryname</td>
+                        <td>@item.Chef.Firstname @item.Chef.Lastname</td>
+                        <td>@item.Recipestatus.Statusname</td>
+                        <td>$@item.Price</td>
+                        <td>@item.Publishdate</td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle icon-burger-mini" href="#" role="button" id="dropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="RecipeDetails" asp-route-id="@item.Recipeid">Details</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="DeleteRecipe" asp-route-id="@item.Recipeid">Delete</a>
+                                    @*  <a class="dropdown-item" asp-controller="Admin" asp-action="RejectRecipe" asp-route-id="@item.Recipeid">Reject</a> *@
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

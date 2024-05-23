@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Testimonial>
+@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    
+}
+
+
+
+<!--::review_part start::-->
+<section class="review_part gray_bg section_padding">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-xl-5">
+                <div class="section_tittle">
+                    <p>Testimonials</p>
+                    <h2>Customers Feedback</h2>
+                </div>
+            </div>
+            <div class="col-xl-5 justify-content-end">
+                
+                <a asp-controller="Testimonials" asp-action="Create" class="genric-btn primary circle arrow">Add testimonial<span class="lnr lnr-arrow-right"></span></a>
+            </div>
+        </div>
+
+        
+
+
+        <div class="row">
+            <div class="col-lg-11">
+                <div class="client_review_part owl-carousel">
+                    @foreach (var item in Model )
+                    {
+                        <div class="client_review_single media">
+                            <div class="client_img align-self-center">
+                                <img src="~/Image/personalImage/@item.Cust.Imagepath" alt="">
+                            </div>
+                            <div class="client_review_text media-body">
+                                <p>
+                                    @item.Ucomment
+                                </p>
+                                <h4>@item.Cust.Firstname @item.Cust.Lastname, <span>@item.Cust.Role.Rolename</span></h4>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</section>
+<!--::review_part end::-->

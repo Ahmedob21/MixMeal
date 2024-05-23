@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Userlogin>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+
+<div class="content-wrapper">
+    <div class="content">
+        <!-- For Components documentaion -->
+        <div class="row card-header justify-content-between">
+
+            <h2 class="col">Chef Requests</h2>
+            <a asp-action="AllChef" class="mb-1 btn btn-primary col-2">Back</a>
+        </div>
+
+        <div class="row">
+            @foreach (var chef in Model)
+            {
+                <div class="col-lg-6 col-xl-4 col-xxl-3">
+                    <div class="card card-default mt-7">
+
+                        <div class="card-body text-center">
+                            <a class="d-block mb-2" href="javascript:void(0)" data-toggle="modal" data-target="#modal-contact">
+                                <div class="image mb-3 d-inline-flex mt-n8">
+                                    <img src="~/image/personalImage/@chef.User.Imagepath" class="img-fluid rounded-circle d-inline-block" alt="Avatar Image" width="70" height="70">
+                                </div>
+
+                                <h5 class="card-title">@chef.User.Firstname @chef.User.Lastname</h5>
+                            </a>
+
+                            <ul class="list-unstyled d-inline-block mb-5">
+
+                                <li class="d-flex">
+                                    <i class="mdi mdi-email mr-1"></i>
+                                    <span></span>
+                                </li>
+                                <li class="d-flex">
+                                    <i class="mdi mdi-account mr-1"></i>
+                                    <a asp-controller="Account" asp-action="Profile">Profile</a>
+                                </li>
+                                <li class="d-flex">
+                                    <i class="mdi mdi-account-clock mr-1"></i>
+                                    <span>@chef.User.Userstatus.Statusname</span>
+                                </li>
+                                <li class="d-flex">
+                                    <form asp-controller="Admin" asp-action="AcceptChef" asp-route-id="@chef.Userid" method="post">
+                                        <button type="submit"  value="Accept" class="mb-1 btn btn-success m-1" >Accept</button>
+                                    </form>
+                                    <form asp-controller="Admin" asp-action="RejectChef" asp-route-id ="@chef.Userid" method="post">
+                                        <button type="submit"  value="Reject" class="mb-1 btn btn-danger m-1">Reject</button>
+                                    </form>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

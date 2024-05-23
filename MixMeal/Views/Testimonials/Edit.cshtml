@@ -1,0 +1,50 @@
+﻿@model MixMeal.Models.Testimonial
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Testimonial</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Testumonialid" />
+            <div class="form-group">
+                <label asp-for="Ucomment" class="control-label"></label>
+                <input asp-for="Ucomment" class="form-control" />
+                <span asp-validation-for="Ucomment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Posteddate" class="control-label"></label>
+                <input asp-for="Posteddate" class="form-control" />
+                <span asp-validation-for="Posteddate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Testimonialstatusid" class="control-label"></label>
+                <select asp-for="Testimonialstatusid" class="form-control" asp-items="ViewBag.Testimonialstatusid"></select>
+                <span asp-validation-for="Testimonialstatusid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Custid" class="control-label"></label>
+                <select asp-for="Custid" class="form-control" asp-items="ViewBag.Custid"></select>
+                <span asp-validation-for="Custid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

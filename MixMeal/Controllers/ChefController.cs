@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MixMeal.Models;
 
 namespace MixMeal.Controllers
 {
     public class ChefController : Controller
     {
+
         private readonly ModelContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
         public ChefController(ModelContext context, IWebHostEnvironment webHostEnvironment)
@@ -13,38 +16,115 @@ namespace MixMeal.Controllers
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
+        
         public IActionResult Index()
         {
+           
             return View();
         }
 
-        public IActionResult CreateRecipe()
+        
+        public async Task<IActionResult> MyRecipes()
         {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> CreateRecipe(Recipe recipe)
-        {
-            var chefid = (decimal) HttpContext.Session.GetInt32("chefSession");
-
-            if(chefid == null)
+            var ChefId = HttpContext.Session.GetInt32("chefSession");
+            if (ChefId == null)
             {
-                return View();
+                return NotFound();
+            }
+            var recipes = await _context.Recipes
+                .Include(chef => chef.Chef)
+                .Include(category => category.Category)
+                .Include(status => status.Recipestatus)
+                .Where(recipe => recipe.Chefid == ChefId).ToListAsync();
 
+            if (recipes == null)
+            {
+                return RedirectToAction(nameof(Empty));
             }
 
-            if(ModelState.IsValid) { 
-               
-                 recipe.Chefid = chefid;
-                 await _context.AddAsync(recipe);
-                 await _context.SaveChangesAsync();
-
-
-
-                return RedirectToAction("index" , "Chef");
-            }
-
-                return View(recipe);
+            return View(recipes);
         }
+
+
+        [HttpGet]
+        [Route("Chef/search-by-name")]
+        public IActionResult SearchByName()
+        {
+            var result = GetRecipesByChef();
+            return View(result);
+        }
+
+        [HttpPost]
+        [Route("Chef/search-by-name")]
+        public async Task<IActionResult> SearchByName(string? RecipeName)
+        {
+            var result = GetRecipesByChef();
+
+            if (!string.IsNullOrEmpty(RecipeName))
+            {
+                RecipeName = RecipeName.ToLower();
+                result = _context.Recipes
+                    .Where(recipe => recipe.Recipename.ToLower().Contains(RecipeName))
+                    .ToListAsync();
+            }
+
+            return View(await result);
+        }
+
+        private   async Task<List<Recipe>> GetRecipesByChef()
+        {
+            var chefid = HttpContext.Session.GetInt32("chefSession");
+            if (chefid == null)
+            {
+                return new List<Recipe>(); // Return an empty list if chefid is null
+            }
+
+            return await _context.Recipes
+                .Include(x => x.Category)
+                .Include(x => x.Recipestatus)
+                .Include(x => x.Chef)
+                .Where(recipe => recipe.Chefid == chefid)
+                .ToListAsync();
+        }
+
+        public async Task<IActionResult> MySales(decimal id)
+        {
+            var chefid = HttpContext.Session.GetInt32("chefSession");
+            if (chefid == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if(chefid != id)
+            {
+                return RedirectToAction("accessPermissions" , "Account");
+            }
+
+
+            var MySales = await _context.Purchases
+                .Include(user => user.Customer)
+                .Include(recipe => recipe.Recipe)
+                .Include(chef => chef.Recipe.Chef)
+                .Include(category=> category.Recipe.Category)
+                .Where(purchases => purchases.Recipe.Chefid == chefid).OrderBy(date =>date.Purchasedate).ToListAsync();
+                
+            return View(MySales);
+        }
+
+
+        public IActionResult Empty()
+        {
+            return View();
+        }
+
+
+        public IActionResult PendigChef() { return View(); }
+
+
+
+
+        public IActionResult RejectedChef() { return View(); }
+
+
+
     }
 }

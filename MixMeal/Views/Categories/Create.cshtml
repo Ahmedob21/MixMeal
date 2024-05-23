@@ -1,0 +1,71 @@
+﻿@model MixMeal.Models.Category
+
+@{
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="card card-default col-6 m-5">
+        <div class="card-header">
+            <h2 class="mb-5">Create Category</h2>
+
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div class="form-group row mb-6">
+                    <label asp-for="ImageFile" class="col-sm-4 col-lg-2 col-form-label"></label>
+                    <div class="col-sm-8 col-lg-10">
+                        <div class="custom-file mb-1">
+                            <input asp-for="ImageFile" class="custom-file-input">
+                            <label asp-for="ImageFile" class="custom-file-label"></label>
+                            <span asp-validation-for="Imagepath" class="text-danger"></span>
+                        </div>
+                        <span class="d-block ">Upload a new cover image, JPG 1200x300</span>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-6">
+                    <label asp-for="Categoryname" class="col-sm-4 col-lg-2 col-form-label"></label>
+                    <div class="col-sm-8 col-lg-10">
+                        <input asp-for="Categoryname" class="form-control" id="occupation">
+                        <span asp-validation-for="Categoryname" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-6">
+                    <label asp-for="Categorydescription" class="col-sm-4 col-lg-2 col-form-label"></label>
+                    <div class="col-sm-8 col-lg-10">
+
+
+                        <div class="form-group mb-0">
+                            
+                            <textarea asp-for="Categorydescription" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                            <span asp-validation-for="Categorydescription" class="text-danger"></span>
+                        </div>
+
+
+
+
+
+
+
+
+
+                       @*  <input asp-for="Categorydescription" class="form-control" id="com-name">
+                        <span asp-validation-for="Categorydescription" class="text-danger"></span> *@
+                    </div>
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row justify-content-end">
+                    <div class="d-flex col-lg-2">
+                        <input type="submit" value="Create" class="mb-1 btn btn-pill btn-primary" />
+                    </div>
+                    <div class="d-flex  col-lg-2">
+                        <a asp-action="Index" class="mb-1 btn btn-pill btn-danger">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -9,7 +9,9 @@ namespace MixMeal.Models
         [EmailAddress]
         public string Email { get; set; } = null!;
         [Required]
-        [PasswordPropertyText]
+        [StringLength(40)]
+        //[Range(8,40)]
+        [DataType(DataType.Password)]
         public string Upassword { get; set; } = null!;
     }
 }

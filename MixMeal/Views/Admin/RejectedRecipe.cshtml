@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Recipe>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="card card-default">
+    <div class="card-header">
+        <h2>Rejected Recipes</h2>
+        <a asp-action="AccepttedRecipe" class="mb-1 btn btn-primary">Back</a>
+    </div>
+
+    <div class="card-body">
+
+
+        <table  class="table table-hover table-product" style="width:100%">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Imagepath)</th>
+                    <th>@Html.DisplayNameFor(model => model.Recipename)</th>
+                    <th>@Html.DisplayNameFor(model => model.Category.Categoryname)</th>
+                    <th>@Html.DisplayNameFor(model => model.Chef.Firstname)</th>
+                    <th>@Html.DisplayNameFor(model => model.Recipestatus.Statusname)</th>
+                    <th>@Html.DisplayNameFor(model => model.Price)</th>
+                    <th>@Html.DisplayNameFor(model => model.Publishdate)</th>
+                    <th>@Html.DisplayNameFor(model => model.Publishdate)</th>
+
+
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <br />
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            <img src="~/image/RecipeImage/@item.Imagepath" alt="Product Image">
+                        </td>
+
+                        <td>@item.Recipename</td>
+                        <td>@item.Category.Categoryname</td>
+                        <td>@item.Chef.Firstname @item.Chef.Lastname</td>
+                        <td>@item.Recipestatus.Statusname</td>
+                        <td>$@item.Price</td>
+                        <td>$@item.Publishdate</td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle icon-burger-mini" href="#" role="button" id="dropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="Details" asp-route-id="@item.Recipeid">Details</a>
+                                    @* <a class="dropdown-item" asp-controller="Admin" asp-action="AcceptRecipe" asp-route-id="@item.Recipeid">Accept</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="RejectRecipe" asp-route-id="@item.Recipeid">Reject</a> *@
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

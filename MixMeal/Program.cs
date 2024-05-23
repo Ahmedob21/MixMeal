@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using MixMeal.Models;
 
@@ -18,6 +19,15 @@ namespace MixMeal
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
 
             });
+            builder.Services.AddHttpContextAccessor();
+            // builder.Services.AddAuthentication("CookieAuth")
+            //       .AddCookie("CookieAuth", options =>
+            //     {
+            //    options.LoginPath = "/Account/Login"; // Specify your login path
+            //      options.AccessDeniedPath = "/Home/AccessDenied"; // Redirect here when access is denied
+            //   });
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -39,6 +49,13 @@ namespace MixMeal
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
+            app.MapControllerRoute(
+                 name: "monthlyReport",
+                 pattern: "{controller=Reports}/{action=MonthlyReport}/{year?}/{month?}");
+
+            app.MapControllerRoute(
+                 name: "annualReport",
+                 pattern: "{controller=Reports}/{action=AnnualReport}/{year?}");
             app.Run();
         }
     }

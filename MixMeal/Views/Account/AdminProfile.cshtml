@@ -1,0 +1,47 @@
+﻿@model Userlogin
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<!-- ====================================
+       ——— CONTENT WRAPPER
+       ===================================== -->
+
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+
+        <div class="modal-body pt-0">
+            <div class="row no-gutters">
+                <div class="col-md-6">
+                    <div class="profile-content-left px-4">
+                        <div class="card text-center px-0 border-0">
+                            <div class="card-img mx-auto">
+                                <img class="rounded-circle m-3" src="~/image/personalImage/@Model.User.Imagepath" alt="user image" width="150" height="150">
+                            </div>
+
+                            <div class="card-body">
+                                <h4 class="py-2">@Model.User.Firstname @Model.User.Lastname</h4>
+                                <p>@("@" + Model.User.Username)</p>
+                                <a class="btn btn-primary btn-pill btn-lg my-4" asp-action="Index">back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="contact-info px-4 m-3">
+                        <h4 class="mb-1">My Profile</h4>
+                        <p class="text-dark font-weight-medium pt-4 mb-2">Email address</p>
+                        <p>@Model.Email</p>
+                        <p class="text-dark font-weight-medium pt-4 mb-2">Phone Number</p>
+                        <p>@Model.User.Phone</p>
+                        <p class="text-dark font-weight-medium pt-4 mb-2">Birthday</p>
+                        <p>@Model.User.Bithdate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -13,6 +13,8 @@ public partial class Purchase
 
     public decimal Recipeid { get; set; }
 
+    public decimal Earnings { get; set; }
+
     public virtual User Customer { get; set; } = null!;
 
     public virtual Recipe Recipe { get; set; } = null!;

@@ -1,0 +1,58 @@
+﻿@model Recipe
+@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+
+}
+
+
+
+
+
+
+
+
+<section class="blog_area single-post-area section_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 posts-list">
+                <div class="single-post">
+                    <div class="feature-img">
+                        <img class="img-fluid" src="~/Image/RecipeImage/@Model.Imagepath" alt="" width="500" height="550">
+                    </div>
+                    <div class="blog_details">
+                        <h2>
+                            @Model.Recipename  
+                        </h2>
+                       
+                        <h4>
+                        Chef Name: @Model.Recipename Category: @Model.Category.Categoryname
+                        </h4>
+                        <p class="excert">
+                            Recipe Description:
+                        </p>
+                        <p>
+                            @Model.Recipedescription
+                        </p>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-lg-4">
+                <div class="blog_right_sidebar">
+                    <aside class="single_sidebar_widget search_widget">
+                        @* <p>$@Model.Price</p> *@
+
+                        <a asp-controller="Customer" asp-action="VisaCards" class="genric-btn primary-border e-large font-size-9" asp-route-id="@Model.Recipeid">$@Model.Price Buy</a>
+                        <a asp-action="RecipesByCategory" asp-route-id="@Model.Categoryid" class="genric-btn primary-border e-large ml-5">Back</a>
+                       
+                        
+                    </aside>
+
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

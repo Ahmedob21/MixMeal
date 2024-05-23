@@ -1,0 +1,72 @@
+﻿@model Contactu
+@{
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="content-wrapper">
+    <div class="content h-100">
+        <div class="email-wrapper rounded border bg-white h-100">
+            <div class="row no-gutters justify-content-center h-100">
+                <div class="col-lg-4 col-xl-3 col-xxl-2">
+                    <div class="email-left-column email-options p-4 p-xl-5">
+                        <a asp-action="ContactInbox" class="btn btn-block btn-primary btn-pill mb-4 mb-xl-5">Back</a>
+                     
+
+                    </div>
+                </div>
+                <div class="col-lg-8 col-xl-9 col-xxl-10">
+                    <div class="email-right-column p-4 p-xl-5">
+                        <!-- Email Right Header -->
+
+                        <div class="border rounded email-details">
+
+                            <div class="email-details-header">
+                                <h4 class="text-dark">Email</h4>
+                            </div>
+
+                            <div class="email-details-content">
+                                <div class="email-details-content-header">
+
+                                    <div class="media media-sm mb-lg-0">
+
+                                        <div class="media-body">
+                                            <h6 class="mt-0 text-dark font-weight-bold">@Model.Custname</h6>
+                                            <span>
+                                                From:
+                                                <i class="mdi mdi-chevron-left"></i>@Model.Custemail
+                                                <i class="mdi mdi-chevron-right"></i>to MixMeal@("@") gmail.com
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="email-details-content-header-right">
+                                        <time class="p-1 p-xl-2">@Model.Contactdate</time>
+
+
+                                        <div class="btn-group p-1 p-xl-2" role="group" aria-label="Basic example">
+
+                                            <a asp-action="Delete" asp-route-id="@Model.Contactusid" class="btn btn-pill mdi mdi-trash-can-outline"> </a>
+                                        </div>
+
+                                       
+
+
+                                    </div>
+                                </div>
+                                <p class="pb-4">Hi Selena</p>
+                                <p>
+                                   @Model.Message
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Userlogin>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+
+
+
+<!-- ====================================
+——— CONTENT WRAPPER
+===================================== -->
+<div class="content-wrapper">
+    <div class="content">
+        <div class="card card-default">
+            <div class="card-header align-items-center px-3 px-md-5">
+                <h2>Customers</h2>
+
+                
+            </div>
+
+            <div class="card-body px-3 px-md-5">
+                <div class="row">
+                    @foreach(var customers in Model){ 
+                        <div class="col-lg-6 col-xl-4">
+                            <div class="card card-default p-4">
+                                <a asp-controller="Admin" asp-action="CustomerDetails" asp-route-userid="@customers.User.Userid" class="media text-secondary">
+                                        <img src="~/image/personalImage/@customers.User.Imagepath" class="mr-3 img-fluid rounded" alt="Avatar Image" height="80" width="80">
+
+                                    <div class="media-body">
+                                            <h5 class="mt-0 mb-2 text-dark">@customers.User.Firstname @customers.User.Lastname</h5>
+                                        <ul class="list-unstyled text-smoke text-smoke">
+                                            
+                                            <li class="d-flex">
+                                                <i class="mdi mdi-key-variant mr-1"></i>
+                                                <span>@customers.User.Role.Rolename</span>
+                                            </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                   
+
+                </div>
+            </div>
+           
+        
+    </div>
+  </div>
+
+</div>

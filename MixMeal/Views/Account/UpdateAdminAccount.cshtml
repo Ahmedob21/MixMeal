@@ -1,0 +1,53 @@
+﻿@model EditAccount
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row justify-content-center mt-5">
+
+    <div class="col-xl-6">
+        <!-- Account Settings -->
+        <div class="card card-default">
+            <div class="card-header">
+                <h2 class="mb-5">Account Settings</h2>
+
+            </div>
+
+            <div class="card-body">
+
+                <form asp-action="UpdateAccount" method="post">
+
+                    <div class="row">
+                        <div class="form-group col-6 mb-4">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email"></span>
+                        </div>
+
+                        <div class="form-group col-6 mb-4">
+                            <label asp-for="OldPassword"></label>
+                            <input asp-for="OldPassword" class="form-control" />
+                            <span asp-validation-for="OldPassword"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6 mb-4">
+                            <label asp-for="Upassword"></label>
+                            <input asp-for="Upassword" class="form-control" />
+                            <span asp-validation-for="Upassword"></span>
+                        </div>
+
+                        <div class="form-group col-6 mb-4">
+                            <label asp-for="ConfirmPassword"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword"></span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center mt-6">
+                        <button type="submit" class="btn btn-primary mb-2 btn-pill">Update Account</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

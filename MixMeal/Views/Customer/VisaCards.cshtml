@@ -1,0 +1,66 @@
+﻿@model VisaCard
+@{
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+   // Recipe recipe = ViewBag.recipe;
+}
+
+<div class="row justify-content-center ">
+    <div class="card card-default col-6 m-5">
+        <div class="card-header">
+            <h2 class="mb-5">visa card</h2>
+
+        </div>
+        <div class="card-body">
+            <form asp-controller="Customer" asp-action="VisaCards" enctype="multipart/form-data">
+               
+                     
+
+                <div class="form-group row mb-6">
+                    <label asp-for="Cardname" class="col-sm-4 col-lg-4 col-form-label"></label>
+                    <div class="col-sm-4 col-lg-6">
+                        <input asp-for="Cardname" class="form-control" id="occupation">
+                        <span asp-validation-for="Cardname" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-6">
+                    <label asp-for="Cardnumber" class="col-sm-4 col-lg-4 col-form-label"></label>
+                    <div class="col-sm-4 col-lg-6">
+                        <input asp-for="Cardnumber" class="form-control" id="com-name">
+                        <span asp-validation-for="Cardnumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-6">
+                    <label asp-for="Cvv" class="col-sm-4 col-lg-4 col-form-label"></label>
+                    <div class="col-sm-4 col-lg-6">
+                        <input asp-for="Cvv" class="form-control" id="com-name">
+                        <span asp-validation-for="Cvv" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group row mb-6">
+                    <label asp-for="Expiredate" class="col-sm-4 col-lg-4 col-form-label"></label>
+                    <div class="col-sm-4 col-lg-6">
+                    <input asp-for="Expiredate" asp-format="{0:yyyy-MM}" />
+                    </div>
+                </div>
+                
+                
+                
+                
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row justify-content-end">
+                    <div class="d-flex col-lg-2">
+                        <input type="submit" value="submit" asp-route-id="@ViewBag.recipe"  class="mb-1 btn btn-pill btn-primary" />
+                    </div>
+                    <div class="d-flex  col-lg-2">
+                        <a asp-action="Index" class="mb-1 btn btn-pill btn-danger">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

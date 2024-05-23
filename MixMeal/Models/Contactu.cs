@@ -13,7 +13,7 @@ public partial class Contactu
 
     public string Custemail { get; set; } = null!;
 
-    public string Message { get; set; } = null!;
-
     public DateTimeOffset? Contactdate { get; set; }
+
+    public string? Message { get; set; }
 }

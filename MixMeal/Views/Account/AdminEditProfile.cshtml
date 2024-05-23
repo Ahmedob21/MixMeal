@@ -1,0 +1,86 @@
+﻿@model User
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="row justify-content-center mt-5">
+
+        <div class="col-xl-6">
+        <!-- Account Settings -->
+                <div class="card card-default">
+                        <div class="card-header">
+                            <h2 class="mb-5">Account Settings</h2>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <form asp-action="UpdateMyProfile" enctype="multipart/form-data" method="post">
+                                <div class="row mb-2">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="Firstname"></label>
+                                            <input asp-for="Firstname" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="Lastname"></label>
+                                            <input asp-for="Lastname" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="form-group col-6 mb-4">
+                                        <label asp-for="Username"></label>
+                                        <input asp-for="Username" class="form-control">
+
+                                    </div>
+
+                                    <div class="form-group col-6 mb-4">
+                                        <label asp-for="Phone"></label>
+                                        <input asp-for="Phone" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="form-group col-6 mb-4">
+                                        <label asp-for="Bithdate"></label>
+                                        <input asp-for="Bithdate" class="form-control">
+                                    </div>
+
+
+                                    <div class="form-group col-6 ">
+                                        <label asp-for="Genderid"></label>
+                                        <select asp-for="Genderid" class="form-control input-lg" asp-items="ViewBag.Genderid">
+                                            <option value="default" selected>Gender</option>
+
+
+                                        </select>
+                                        <span asp-validation-for="Genderid" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-6">
+                                    <label asp-for="ImageFile" class="col-sm-4 col-lg-2 col-form-label"></label>
+                                    <div class="col-sm-8 col-lg-10">
+                                        <div class="custom-file mb-1">
+                                            <input asp-for="ImageFile" class="custom-file-input">
+                                            <label asp-for="ImageFile" class="custom-file-label"></label>
+                                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-6">
+                                    <button type="submit" class="btn btn-primary mb-2 btn-pill">Update Profile</button>
+                                </div>
+
+                            </form>
+                        </div>
+                </div>
+        </div>
+</div>
+ 

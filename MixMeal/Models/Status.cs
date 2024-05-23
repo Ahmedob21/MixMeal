@@ -11,7 +11,7 @@ public partial class Status
 
     public virtual ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
 
-    public virtual ICollection<Testumonial> Testumonials { get; set; } = new List<Testumonial>();
+    public virtual ICollection<Testimonial> Testimonials { get; set; } = new List<Testimonial>();
 
     public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Recipes\Edit.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="3.4.20" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.29" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.29" />
@@ -18,6 +24,24 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="ODP.NetCore" Version="2.0.12" />
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Image\ContactImage\" />
+    <Folder Include="wwwroot\Image\AboutPageImage\" />
+    <Folder Include="wwwroot\Image\RecipeImage\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Recipes\Edit.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Recipes\Edit.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Recipes\Edit.cshtml" />
   </ItemGroup>
 
 </Project>

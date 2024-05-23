@@ -1,0 +1,84 @@
+﻿@model Recipe
+@{
+    Layout = "~/Views/Shared/_ChefLayout.cshtml";
+}
+
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+        <form asp-action="Edit" enctype="multipart/form-data" method="POST">
+            <div class="modal-header px-4">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Add Recipe</h5>
+
+                <a asp-controller="Chef" asp-action="Index" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+            </div>
+
+            <div class="modal-body px-4">
+
+                <div class="form-group">
+                    <label for="firstName">Recipe Name</label>
+                    <input asp-for="Recipename" class="form-control" placeholder="Burger">
+                    <span asp-validation-for="Recipename" class="text-danger"></span>
+                </div>
+
+
+
+                <div class="form-group mb-0">
+                    <label for="firstName">Recipe Description</label>
+                    <textarea asp-for="Recipedescription" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                    <span asp-validation-for="Recipedescription" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-0">
+                    <label for="firstName">Ingredients</label>
+                    <textarea asp-for="Ingredientname" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                    <span asp-validation-for="Ingredientname" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-0">
+                    <label asp-for="Instructions">Instructions</label>
+                    <textarea asp-for="Instructions" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                    <span asp-validation-for="Instructions" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect13">Recipe Category</label>
+                            <select asp-for="Categoryid" class="form-control rounded-pill" asp-items="ViewBag.Categoryid">
+                                <span asp-validation-for="Categoryid" class="text-danger"></span>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="text-dark font-weight-medium">Price</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text mdi mdi-currency-usd" id="basic-addon1"></span>
+                                </div>
+                                <input asp-for="Price" class="form-control" data-mask="99-9999999">
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-file mb-1">
+                        <input asp-for="ImageFile" class="custom-file-input">
+                        <label asp-for="ImageFile" class="custom-file-label"></label>
+                        <span asp-validation-for="Imagepath" class="text-danger"></span>
+                    </div>
+                    <span class="d-block ">Upload a new cover image, JPG 1200x300</span>
+                </div>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"><span></span></div>
+            <div class="row justify-content-end">
+                <div class="modal-footer border-top-0 px-4 pt-0">
+                    <input type="submit" value="SAVE" class="btn btn-primary btn-pill m-0" />
+                </div>
+                <div class="modal-footer border-top-0 px-4 pt-0">
+                    <a asp-controller="Chef" asp-action="MyRecipes" class="btn btn-primary btn-pill m-0"> Cancel </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

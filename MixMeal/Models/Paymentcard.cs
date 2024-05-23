@@ -9,13 +9,11 @@ public partial class Paymentcard
 
     public string Cardname { get; set; } = null!;
 
-    public decimal Cardnumber { get; set; }
+    public string Cardnumber { get; set; } = null!;
 
-    public decimal Cvc { get; set; }
+    public string Cvv { get; set; } = null!;
 
     public decimal Balance { get; set; }
 
-    public decimal Cutomerid { get; set; }
-
-    public virtual User Cutomer { get; set; } = null!;
+    public DateTime Expiredate { get; set; }
 }

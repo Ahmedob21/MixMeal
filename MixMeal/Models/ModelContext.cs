@@ -15,9 +15,17 @@ public partial class ModelContext : DbContext
     {
     }
 
+    public virtual DbSet<Aboutpagecontent> Aboutpagecontents { get; set; }
+
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Contactu> Contactus { get; set; }
+
+    public virtual DbSet<Contactuspagecontent> Contactuspagecontents { get; set; }
+
+    public virtual DbSet<Gender> Genders { get; set; }
+
+    public virtual DbSet<Homepagecontent> Homepagecontents { get; set; }
 
     public virtual DbSet<Paymentcard> Paymentcards { get; set; }
 
@@ -27,7 +35,9 @@ public partial class ModelContext : DbContext
 
     public virtual DbSet<Status> Statuses { get; set; }
 
-    public virtual DbSet<Testumonial> Testumonials { get; set; }
+    public virtual DbSet<Testimonial> Testimonials { get; set; }
+
+    public virtual DbSet<Testimonialpagecontent> Testimonialpagecontents { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -45,9 +55,35 @@ public partial class ModelContext : DbContext
             .HasDefaultSchema("C##AHMAD3")
             .UseCollation("USING_NLS_COMP");
 
+        modelBuilder.Entity<Aboutpagecontent>(entity =>
+        {
+            entity.HasKey(e => e.Aboutpagecontentid).HasName("SYS_C008389");
+
+            entity.ToTable("ABOUTPAGECONTENT");
+
+            entity.Property(e => e.Aboutpagecontentid)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("NUMBER")
+                .HasColumnName("ABOUTPAGECONTENTID");
+            entity.Property(e => e.Content)
+                .HasColumnType("CLOB")
+                .HasColumnName("CONTENT");
+            entity.Property(e => e.Contenttype)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CONTENTTYPE");
+            entity.Property(e => e.Imagepath)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("IMAGEPATH");
+            entity.Property(e => e.Position)
+                .HasColumnType("NUMBER")
+                .HasColumnName("POSITION");
+        });
+
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Categoryid).HasName("SYS_C008448");
+            entity.HasKey(e => e.Categoryid).HasName("SYS_C008351");
 
             entity.ToTable("CATEGORY_");
 
@@ -71,7 +107,7 @@ public partial class ModelContext : DbContext
 
         modelBuilder.Entity<Contactu>(entity =>
         {
-            entity.HasKey(e => e.Contactusid).HasName("SYS_C008473");
+            entity.HasKey(e => e.Contactusid).HasName("SYS_C008377");
 
             entity.ToTable("CONTACTUS");
 
@@ -80,7 +116,7 @@ public partial class ModelContext : DbContext
                 .HasColumnType("NUMBER")
                 .HasColumnName("CONTACTUSID");
             entity.Property(e => e.Contactdate)
-                .HasDefaultValueSql("SYSTIMESTAMP\n")
+                .HasDefaultValueSql("SYSTIMESTAMP\n   ")
                 .HasColumnType("TIMESTAMP(6) WITH TIME ZONE")
                 .HasColumnName("CONTACTDATE");
             entity.Property(e => e.Custemail)
@@ -92,8 +128,7 @@ public partial class ModelContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("CUSTNAME");
             entity.Property(e => e.Message)
-                .HasMaxLength(1000)
-                .IsUnicode(false)
+                .HasColumnType("CLOB")
                 .HasColumnName("MESSAGE");
             entity.Property(e => e.Subject)
                 .HasMaxLength(40)
@@ -101,13 +136,81 @@ public partial class ModelContext : DbContext
                 .HasColumnName("SUBJECT");
         });
 
+        modelBuilder.Entity<Contactuspagecontent>(entity =>
+        {
+            entity.HasKey(e => e.Contactuspagecontentid).HasName("SYS_C008378");
+
+            entity.ToTable("CONTACTUSPAGECONTENT");
+
+            entity.Property(e => e.Contactuspagecontentid)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("NUMBER")
+                .HasColumnName("CONTACTUSPAGECONTENTID");
+            entity.Property(e => e.Content)
+                .HasColumnType("CLOB")
+                .HasColumnName("CONTENT");
+            entity.Property(e => e.Contenttype)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CONTENTTYPE");
+            entity.Property(e => e.Imagepath)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("IMAGEPATH");
+            entity.Property(e => e.Position)
+                .HasColumnType("NUMBER")
+                .HasColumnName("POSITION");
+        });
+
+        modelBuilder.Entity<Gender>(entity =>
+        {
+            entity.HasKey(e => e.Genderid).HasName("GENDER_PK");
+
+            entity.ToTable("GENDER");
+
+            entity.HasIndex(e => e.Gendername, "SYS_C008334").IsUnique();
+
+            entity.Property(e => e.Genderid)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("NUMBER")
+                .HasColumnName("GENDERID");
+            entity.Property(e => e.Gendername)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("GENDERNAME");
+        });
+
+        modelBuilder.Entity<Homepagecontent>(entity =>
+        {
+            entity.HasKey(e => e.Homepagecontentid).HasName("SYS_C008356");
+
+            entity.ToTable("HOMEPAGECONTENT");
+
+            entity.Property(e => e.Homepagecontentid)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("NUMBER")
+                .HasColumnName("HOMEPAGECONTENTID");
+            entity.Property(e => e.Content)
+                .HasColumnType("CLOB")
+                .HasColumnName("CONTENT");
+            entity.Property(e => e.Contenttype)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CONTENTTYPE");
+            entity.Property(e => e.Imagepath)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("IMAGEPATH");
+            entity.Property(e => e.Position)
+                .HasColumnType("NUMBER")
+                .HasColumnName("POSITION");
+        });
+
         modelBuilder.Entity<Paymentcard>(entity =>
         {
-            entity.HasKey(e => e.Cardid).HasName("SYS_C008444");
+            entity.HasKey(e => e.Cardid).HasName("SYS_C008367");
 
             entity.ToTable("PAYMENTCARD");
-
-            entity.HasIndex(e => e.Cardnumber, "SYS_C008445").IsUnique();
 
             entity.Property(e => e.Cardid)
                 .ValueGeneratedOnAdd()
@@ -117,28 +220,25 @@ public partial class ModelContext : DbContext
                 .HasColumnType("FLOAT")
                 .HasColumnName("BALANCE");
             entity.Property(e => e.Cardname)
-                .HasMaxLength(100)
+                .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("CARDNAME");
             entity.Property(e => e.Cardnumber)
-                .HasColumnType("NUMBER(38)")
+                .HasMaxLength(16)
+                .IsUnicode(false)
                 .HasColumnName("CARDNUMBER");
-            entity.Property(e => e.Cutomerid)
-                .HasColumnType("NUMBER")
-                .HasColumnName("CUTOMERID");
-            entity.Property(e => e.Cvc)
-                .HasColumnType("NUMBER(38)")
-                .HasColumnName("CVC");
-
-            entity.HasOne(d => d.Cutomer).WithMany(p => p.Paymentcards)
-                .HasForeignKey(d => d.Cutomerid)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_CUTOMERID");
+            entity.Property(e => e.Cvv)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasColumnName("CVV");
+            entity.Property(e => e.Expiredate)
+                .HasColumnType("DATE")
+                .HasColumnName("EXPIREDATE");
         });
 
         modelBuilder.Entity<Purchase>(entity =>
         {
-            entity.HasKey(e => e.Purchaseid).HasName("SYS_C008461");
+            entity.HasKey(e => e.Purchaseid).HasName("SYS_C008382");
 
             entity.ToTable("PURCHASE");
 
@@ -149,6 +249,9 @@ public partial class ModelContext : DbContext
             entity.Property(e => e.Customerid)
                 .HasColumnType("NUMBER")
                 .HasColumnName("CUSTOMERID");
+            entity.Property(e => e.Earnings)
+                .HasColumnType("FLOAT")
+                .HasColumnName("EARNINGS");
             entity.Property(e => e.Purchasedate)
                 .HasDefaultValueSql("SYSTIMESTAMP")
                 .HasColumnType("TIMESTAMP(6) WITH TIME ZONE")
@@ -170,7 +273,7 @@ public partial class ModelContext : DbContext
 
         modelBuilder.Entity<Recipe>(entity =>
         {
-            entity.HasKey(e => e.Recipeid).HasName("SYS_C008456");
+            entity.HasKey(e => e.Recipeid).HasName("SYS_C008338");
 
             entity.ToTable("RECIPE");
 
@@ -185,27 +288,24 @@ public partial class ModelContext : DbContext
                 .HasColumnType("NUMBER")
                 .HasColumnName("CHEFID");
             entity.Property(e => e.Imagepath)
-                .HasMaxLength(150)
+                .HasMaxLength(500)
                 .IsUnicode(false)
                 .HasColumnName("IMAGEPATH");
-            entity.Property(e => e.Ingredients)
-                .HasMaxLength(1000)
-                .IsUnicode(false)
-                .HasColumnName("INGREDIENTS");
+            entity.Property(e => e.Ingredientname)
+                .HasColumnType("CLOB")
+                .HasColumnName("INGREDIENTNAME");
             entity.Property(e => e.Instructions)
-                .HasMaxLength(1000)
-                .IsUnicode(false)
+                .HasColumnType("CLOB")
                 .HasColumnName("INSTRUCTIONS");
             entity.Property(e => e.Price)
                 .HasColumnType("FLOAT")
                 .HasColumnName("PRICE");
             entity.Property(e => e.Publishdate)
-                .HasDefaultValueSql("SYSTIMESTAMP  ")
+                .HasDefaultValueSql("SYSTIMESTAMP")
                 .HasColumnType("TIMESTAMP(6) WITH TIME ZONE")
                 .HasColumnName("PUBLISHDATE");
             entity.Property(e => e.Recipedescription)
-                .HasMaxLength(1000)
-                .IsUnicode(false)
+                .HasColumnType("CLOB")
                 .HasColumnName("RECIPEDESCRIPTION");
             entity.Property(e => e.Recipename)
                 .HasMaxLength(70)
@@ -222,18 +322,16 @@ public partial class ModelContext : DbContext
 
             entity.HasOne(d => d.Chef).WithMany(p => p.Recipes)
                 .HasForeignKey(d => d.Chefid)
-                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_CHEFID");
 
             entity.HasOne(d => d.Recipestatus).WithMany(p => p.Recipes)
                 .HasForeignKey(d => d.Recipestatusid)
-                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_RECIPESTATUSID");
         });
 
         modelBuilder.Entity<Status>(entity =>
         {
-            entity.HasKey(e => e.Statusid).HasName("SYS_C008419");
+            entity.HasKey(e => e.Statusid).HasName("SYS_C008355");
 
             entity.ToTable("STATUS");
 
@@ -247,11 +345,11 @@ public partial class ModelContext : DbContext
                 .HasColumnName("STATUSNAME");
         });
 
-        modelBuilder.Entity<Testumonial>(entity =>
+        modelBuilder.Entity<Testimonial>(entity =>
         {
-            entity.HasKey(e => e.Testumonialid).HasName("SYS_C008465");
+            entity.HasKey(e => e.Testumonialid).HasName("SYS_C008390");
 
-            entity.ToTable("TESTUMONIAL");
+            entity.ToTable("TESTIMONIAL");
 
             entity.Property(e => e.Testumonialid)
                 .ValueGeneratedOnAdd()
@@ -268,24 +366,50 @@ public partial class ModelContext : DbContext
                 .HasColumnType("NUMBER")
                 .HasColumnName("TESTIMONIALSTATUSID");
             entity.Property(e => e.Ucomment)
-                .HasMaxLength(500)
+                .HasMaxLength(2000)
                 .IsUnicode(false)
                 .HasColumnName("UCOMMENT");
 
-            entity.HasOne(d => d.Cust).WithMany(p => p.Testumonials)
+            entity.HasOne(d => d.Cust).WithMany(p => p.Testimonials)
                 .HasForeignKey(d => d.Custid)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_CUSTID");
 
-            entity.HasOne(d => d.Testimonialstatus).WithMany(p => p.Testumonials)
+            entity.HasOne(d => d.Testimonialstatus).WithMany(p => p.Testimonials)
                 .HasForeignKey(d => d.Testimonialstatusid)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_TESTIMONIALSTATUSID");
         });
 
+        modelBuilder.Entity<Testimonialpagecontent>(entity =>
+        {
+            entity.HasKey(e => e.Testimonialpagecontentid).HasName("SYS_C008357");
+
+            entity.ToTable("TESTIMONIALPAGECONTENT");
+
+            entity.Property(e => e.Testimonialpagecontentid)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("NUMBER")
+                .HasColumnName("TESTIMONIALPAGECONTENTID");
+            entity.Property(e => e.Content)
+                .HasColumnType("CLOB")
+                .HasColumnName("CONTENT");
+            entity.Property(e => e.Contenttype)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CONTENTTYPE");
+            entity.Property(e => e.Imagepath)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("IMAGEPATH");
+            entity.Property(e => e.Position)
+                .HasColumnType("NUMBER")
+                .HasColumnName("POSITION");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Userid).HasName("SYS_C008424");
+            entity.HasKey(e => e.Userid).HasName("SYS_C008397");
 
             entity.ToTable("USER_");
 
@@ -302,8 +426,11 @@ public partial class ModelContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("FIRSTNAME");
+            entity.Property(e => e.Genderid)
+                .HasColumnType("NUMBER")
+                .HasColumnName("GENDERID");
             entity.Property(e => e.Imagepath)
-                .HasMaxLength(100)
+                .HasMaxLength(500)
                 .IsUnicode(false)
                 .HasColumnName("IMAGEPATH");
             entity.Property(e => e.Lastname)
@@ -325,6 +452,11 @@ public partial class ModelContext : DbContext
                 .HasColumnType("NUMBER")
                 .HasColumnName("USERSTATUSID");
 
+            entity.HasOne(d => d.Gender).WithMany(p => p.Users)
+                .HasForeignKey(d => d.Genderid)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("USER__FK2");
+
             entity.HasOne(d => d.Role).WithMany(p => p.Users)
                 .HasForeignKey(d => d.Roleid)
                 .HasConstraintName("USER__FK1");
@@ -336,11 +468,11 @@ public partial class ModelContext : DbContext
 
         modelBuilder.Entity<Userlogin>(entity =>
         {
-            entity.HasKey(e => e.UserloginId).HasName("SYS_C008433");
+            entity.HasKey(e => e.UserloginId).HasName("SYS_C008348");
 
             entity.ToTable("USERLOGIN");
 
-            entity.HasIndex(e => e.Email, "SYS_C008434").IsUnique();
+            entity.HasIndex(e => e.Email, "SYS_C008349").IsUnique();
 
             entity.Property(e => e.UserloginId)
                 .ValueGeneratedOnAdd()
@@ -360,17 +492,16 @@ public partial class ModelContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Userlogins)
                 .HasForeignKey(d => d.Userid)
-                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_USERID");
         });
 
         modelBuilder.Entity<Userrole>(entity =>
         {
-            entity.HasKey(e => e.Roleid).HasName("SYS_C008427");
+            entity.HasKey(e => e.Roleid).HasName("SYS_C008380");
 
             entity.ToTable("USERROLE");
 
-            entity.HasIndex(e => e.Rolename, "SYS_C008428").IsUnique();
+            entity.HasIndex(e => e.Rolename, "SYS_C008381").IsUnique();
 
             entity.Property(e => e.Roleid)
                 .ValueGeneratedOnAdd()

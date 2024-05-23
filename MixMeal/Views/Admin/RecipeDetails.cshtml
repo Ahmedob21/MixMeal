@@ -1,0 +1,98 @@
+﻿@model Recipe
+
+@{
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-body pt-0">
+            <div class="row no-gutters">
+                <div class="col-md-6">
+                    <div class="profile-content-left px-4">
+                        <div class="card text-center px-0 border-0">
+                            <div class="card-img mx-auto">
+                                <img class=" m-3" src="~/image/RecipeImage/@Model.Imagepath" alt="user image" width="150" height="150">
+                            </div>
+
+                            <div class="card-body">
+                                <h4 class="py-2">@Model.Recipename</h4>
+
+                                <a class="btn btn-primary btn-pill btn-lg my-4" asp-action="AccepttedRecipe">back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="contact-info px-4 m-3">
+                        <h4 class="mb-1">Recipe Details</h4>
+                        <p class="text-dark font-weight-medium pt-4 mb-2">Publish date: <span>@Model.Publishdate</span> </p>
+
+                        <p class="text-dark font-weight-medium pt-4 mb-2">Chef Name: <span>@Model.Chef.Firstname @Model.Chef.Lastname</span> </p>
+
+                        <p class="text-dark font-weight-medium pt-4 mb-2">Price: <span>$@Model.Price</span> </p>
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                <div class="accordion accordion-shadow col-12" id="accordionShadow">
+                    <div class="card">
+                        <div class="card-header" id="headingShadowOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseShadowOne"
+                                        aria-expanded="true" aria-controls="collapseShadowOne">
+                                    Recipe Description
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseShadowOne" class="collapse show" aria-labelledby="headingShadowOne" data-parent="#accordionShadow">
+                            <div class="card-body">
+                                @Model.Recipedescription
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingShadowTwo">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseShadowTwo"
+                                        aria-expanded="false" aria-controls="collapseShadowTwo">
+                                    Ingredients
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseShadowTwo" class="collapse" aria-labelledby="headingShadowTwo" data-parent="#accordionShadow">
+                            <div class="card-body">
+                                @Model.Ingredientname
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card ">
+                        <div class="card-header" id="headingShadowThree">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseShadowThree"
+                                        aria-expanded="false" aria-controls="collapseShadowThree">
+                                    Instructions
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseShadowThree" class="collapse" aria-labelledby="headingShadowThree" data-parent="#accordionShadow">
+                            <div class="card-body">
+                                @Model.Instructions
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

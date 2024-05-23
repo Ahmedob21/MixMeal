@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Contactu> 
+@{
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+
+
+<div class="content-wrapper">
+    <div class="content">
+        <!-- ====================================
+        ——— EMAIL WRAPPER
+        ===================================== -->
+        <div class="email-wrapper rounded border bg-white">
+            <div class="row no-gutters justify-content-center">
+                <div class="col-lg-4 col-xl-3 col-xxl-2">
+                    <div class="email-left-column email-options p-4 p-xl-5">
+                        
+                        <a asp-controller="Admin" asp-action="Index" class="btn btn-block btn-primary btn-pill mb-4 mb-xl-5">back</a>
+                        
+                        <ul class="pb-2">
+                            <li class="d-block active mb-4">
+                                <a href="email-inbox.html">
+                                    <i class="mdi mdi-download mr-2"></i> Contact Us
+                                </a>
+                                <span class="badge badge-secondary">@ViewBag.EmailCount</span>
+                            </li>
+                           
+                        </ul>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-8 col-xl-9 col-xxl-10">
+                    <div class="email-right-column p-4 p-xl-5">
+                        <!-- Email Right Header -->
+                       
+                        <div class="border border-top-0 rounded table-responsive email-list">
+                            <table class="table mb-0 table-email">
+                                <tbody>
+                                    @foreach (var email in Model)
+                                    {
+                                        <tr class="unread col-12">
+
+                                            <td class="col-4">
+                                                <a asp-action="EmailDetails" asp-route-id="@email.Contactusid" class="text-default d-inline-block text-smoke">
+                                                    <span class="badge badge-primary">New</span>
+                                                    <span class="subject text-dark">
+                                                     From:   @email.Custname          
+                                                    </span>
+                                                    
+                                                </a>
+                                            </td>
+                                            <td class="col-4">
+                                                
+                                                <span class="subject text-dark">
+                                                    @email.Subject
+                                                </span>
+                                            </td>
+                                            
+                                            <td class="date col-4">
+                                               @email.Contactdate
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

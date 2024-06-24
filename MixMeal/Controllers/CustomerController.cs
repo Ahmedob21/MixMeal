@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MixMeal.customAuth;
+using MixMeal.EmailSender;
 using MixMeal.Models;
+using MixMeal.PDFGenerator;
 using Org.BouncyCastle.Bcpg;
 using System.Text.RegularExpressions;
 
 namespace MixMeal.Controllers
 {
+    
     public class CustomerController : Controller
     {
         private readonly ModelContext _context;
@@ -17,15 +21,27 @@ namespace MixMeal.Controllers
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
-
-        public IActionResult Index()
+         // Customer
+        public async Task<IActionResult> MyPurchase()
         {
-            return View();
+            var customerid = HttpContext.Session.GetInt32("CustomerSession");
+            var mypurchase = await _context.Purchases
+                .Include(user => user.Customer)
+                .Include(recipe =>recipe.Recipe)
+                .Include(category => category.Recipe.Category)
+                .Include(chef =>chef.Recipe.Chef)
+                .Where(userid => userid.Customerid == customerid).ToListAsync();
+            return View(mypurchase);
         }
 
         [HttpGet]
         public async Task<IActionResult>  VisaCards(decimal id)
         {
+            var customerid = HttpContext.Session.GetInt32("CustomerSession");
+            if(customerid == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var recipe =  _context.Recipes.SingleOrDefaultAsync(recipe => recipe.Recipeid == id);
             ViewBag.recipe = id;
             return View();
@@ -71,10 +87,41 @@ namespace MixMeal.Controllers
 
            
 
-            return RedirectToAction("UpdatePdfOnPurchase", "Recipes" , new { id });
+            return RedirectToAction("UpdatePdfOnPurchase","Customer" , new { id });
         }
 
-      
+
+        public async Task<IActionResult> UpdatePdfOnPurchase(decimal id)
+        {
+            var recipe = await _context.Recipes
+                                 .Include(r => r.Category)
+                                 .Include(r => r.Chef)
+                                 .Include(r => r.Recipestatus)
+                                 .SingleOrDefaultAsync(r => r.Recipeid == id);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+
+            var pdfUpdater = new PDFG(_context, _webHostEnvironment);
+            string filePath = pdfUpdater.UpdateRecipePdf(recipe);
+
+            var CustId = HttpContext.Session.GetInt32("CustomerSession");
+            var customer = await _context.Userlogins.Include(user => user.User)
+                                        .Where(customers => customers.Userid == CustId).SingleOrDefaultAsync();
+            // Send email with the PDF attachment
+            string recipientEmail = customer.Email;
+            string subject = "Your Recipe PDF";
+            string body = "Dear Customer, please find attached your recipe PDF.";
+            SendEmail send = new SendEmail();
+
+            send.SendEmailWithPDF(recipientEmail, subject, body, filePath);
+
+
+
+
+            return RedirectToAction("thanks", "Recipes");
+        }
 
         private bool IsValidVisaCard(VisaCard payment)
         {

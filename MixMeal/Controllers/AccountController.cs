@@ -41,6 +41,25 @@ namespace MixMeal.Controllers
         {
             if (ModelState.IsValid)
             {
+                bool emailExists = await _context.Userlogins.AnyAsync(u => u.Email.ToLower() == registerViewModel.Email.ToLower());
+                if (emailExists)
+                {
+                    ViewData["Genderid"] = new SelectList(_context.Genders, "Genderid", "Gendername");
+                    ModelState.AddModelError("Email", "Email already exists.");
+                    ViewBag.gender = new SelectList(_context.Genders, "GenderId", "GenderId", registerViewModel.Genderid);
+                    return View(registerViewModel);
+                }
+
+
+                bool usernameExists = await _context.Users.AnyAsync(u => u.Username.ToLower() == registerViewModel.Username.ToLower());
+                if (usernameExists)
+                {
+                    ViewData["Genderid"] = new SelectList(_context.Genders, "Genderid", "Gendername");
+                    ModelState.AddModelError("Username", "Username already exists.");
+                    ViewBag.gender = new SelectList(_context.Genders, "GenderId", "GenderId", registerViewModel.Genderid);
+                    return View(registerViewModel);
+                }
+
                 User user = new();
                 user.Firstname = registerViewModel.Firstname;
                 user.Lastname = registerViewModel.Lastname;
@@ -80,7 +99,8 @@ namespace MixMeal.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
-            return View();
+            ViewBag.gender = new SelectList(_context.Genders, "GenderId", "GenderId", registerViewModel.Genderid);
+            return View(registerViewModel);
         }
 
         [HttpGet]
@@ -98,7 +118,28 @@ namespace MixMeal.Controllers
         {
             
             if (ModelState.IsValid) {
-               
+
+                bool emailExists = await _context.Userlogins.AnyAsync(u => u.Email.ToLower() == registerViewModel.Email.ToLower());
+                if (emailExists)
+                {
+                    ViewData["Genderid"] = new SelectList(_context.Genders, "Genderid", "Gendername");
+                    ModelState.AddModelError("Email", "Email already exists.");
+                    ViewBag.gender = new SelectList(_context.Genders, "GenderId", "GenderId", registerViewModel.Genderid);
+                    return View(registerViewModel);
+                }
+
+
+                bool usernameExists = await _context.Users.AnyAsync(u => u.Username.ToLower() == registerViewModel.Username.ToLower());
+                if (usernameExists)
+                {
+                    ViewData["Genderid"] = new SelectList(_context.Genders, "Genderid", "Gendername");
+                    ModelState.AddModelError("Username", "Username already exists.");
+                    ViewBag.gender = new SelectList(_context.Genders, "GenderId", "GenderId", registerViewModel.Genderid);
+                    return View(registerViewModel);
+                }
+
+
+
                 User user = new();
                 user.Firstname = registerViewModel.Firstname;
                 user.Lastname = registerViewModel.Lastname;
@@ -122,7 +163,7 @@ namespace MixMeal.Controllers
                     user.Imagepath = "default.jpg";
                 }
                 user.Roleid = 3;
-                user.Userstatusid = 1;
+                user.Userstatusid = 2;
                 user.Genderid = registerViewModel.Genderid;
 
                 await _context.AddAsync(user);
@@ -141,7 +182,7 @@ namespace MixMeal.Controllers
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.gender = new SelectList(_context.Genders, "GenderId", "GenderId", registerViewModel.Genderid);
-            return View();
+            return View(registerViewModel);
         }
 
 
@@ -163,7 +204,7 @@ namespace MixMeal.Controllers
 
             var user = await _context.Userlogins
                 .Include(u => u.User).Include(role =>role.User.Role)
-                .SingleOrDefaultAsync(u => u.Email == userlogin.Email && u.Upassword == (userlogin.Upassword));
+                .SingleOrDefaultAsync(u => u.Email.ToLower() == userlogin.Email.ToLower() && u.Upassword == (userlogin.Upassword));
 
             if (user == null)
             {
@@ -182,10 +223,6 @@ namespace MixMeal.Controllers
 
 
 
-          
-
-            
-
             switch (user.User.Roleid)
             {
                 case 1: // Admin
@@ -195,11 +232,11 @@ namespace MixMeal.Controllers
                 case 2: // Chef
                     HttpContext.Session.SetInt32("chefSession", (int)user.Userid);
                     ViewBag.chefid = user.Userid;
-                    return RedirectToAction("Index", "Chef");
+                    return RedirectToAction("MyRecipes", "Chef");
                 case 3: // Customer
                     HttpContext.Session.SetInt32("CustomerSession", (int)user.Userid);
                     ViewBag.Customerid = user.Userid;
-                    return RedirectToAction("Index", "Customer");
+                    return RedirectToAction("Profile", "Account");
                 default:
                     ModelState.AddModelError("", "Unknown role.");
                     return View(userlogin);
@@ -276,6 +313,8 @@ namespace MixMeal.Controllers
                 .Include(user => user.Userstatus)
                 .SingleOrDefaultAsync(u => u.Userid == userId);
 
+            ViewBag.image = profile;
+
             if (profile == null)
             {
                 return NotFound();
@@ -300,7 +339,7 @@ namespace MixMeal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateMyProfile([Bind("Firstname,Lastname,Username,Phone,Bithdate,ImageFile,Genderid")] EditProfile updatedProfile)
+        public async Task<IActionResult> UpdateMyProfile([Bind("Firstname,Lastname,Username,Phone,Bithdate,ImageFile,Genderid")] EditProfile updatedProfile , string? imagepath)
         {
             var userId = HttpContext.Session.GetInt32("userSession");
 
@@ -315,7 +354,7 @@ namespace MixMeal.Controllers
                
                 try
                 {
-                    // Update the existing user with the new data, except Userid and Roleid
+                   
                     existingUser.Firstname = updatedProfile.Firstname;
                     existingUser.Lastname = updatedProfile.Lastname;
                     existingUser.Username = updatedProfile.Username;
@@ -337,7 +376,7 @@ namespace MixMeal.Controllers
                     }
                     else
                     {
-                        existingUser.Imagepath = "default.jpg";
+                        existingUser.Imagepath = imagepath;
                     }
 
                     await _context.SaveChangesAsync();
@@ -523,7 +562,7 @@ namespace MixMeal.Controllers
             return View();
         }
 
-        public IActionResult accessPermissions()
+        public IActionResult AccessDenied()
         {
             return View();
         }

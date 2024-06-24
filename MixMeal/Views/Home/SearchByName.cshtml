@@ -24,7 +24,7 @@
 <!-- breadcrumb start-->
 
 
-<section class="exclusive_item_part blog_item_section">
+<section class=" blog_item_section">
     <div class="container">
         <div class="row">
             <div class="col-xl-5">
@@ -37,7 +37,7 @@
         <div class="row mb-5">
             @foreach (var item in Model)
             {
-                <div class="col-sm-6 col-lg-4">
+                <div class="col-sm-6 col-lg-4 mb-5 mt-5">
                     <div class="single_blog_item">
                         <div class="single_blog_img">
                             <img src="~/Image/RecipeImage/@item.Imagepath" alt="" width="350" height="350">
@@ -45,7 +45,7 @@
                         <div class="single_blog_text">
                             <h3>@item.Recipename</h3>
                             <p>@item.Recipedescription</p>
-                            <a asp-action="RecipeDetails" asp-route-id="@item.Recipeid" class="btn_3">Buy Recipe <img src="~/Home/img/icon/left_2.svg" alt=""></a>
+                            <a asp-controller="Customer" asp-action="VisaCards" asp-route-id="@item.Recipeid" class="btn_3">Buy $@item.Price<img src="~/Home/img/icon/left_2.svg" alt=""></a>
                         </div>
                     </div>
                 </div>

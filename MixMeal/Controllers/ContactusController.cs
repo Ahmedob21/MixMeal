@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MixMeal.customAuth;
 using MixMeal.Models;
 
 namespace MixMeal.Controllers
 {
+    
     public class ContactusController : Controller
     {
         private readonly ModelContext _context;
@@ -17,7 +20,7 @@ namespace MixMeal.Controllers
         {
             _context = context;
         }
-
+        [CustomAuthorize(1)] // Admin
         public async Task<IActionResult> ContactInbox()
         {
 
@@ -30,8 +33,8 @@ namespace MixMeal.Controllers
 
             return View();
         }
-  
 
+        [CustomAuthorize(1)] // Admin
         // GET: Contactus/Details/5
         public async Task<IActionResult> EmailDetails(decimal? id)
         {
@@ -51,8 +54,12 @@ namespace MixMeal.Controllers
         }
 
         // GET: Contactus/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.Phone = await _context.Contactuspagecontents.SingleOrDefaultAsync(c => c.Contenttype == "Phone");
+            ViewBag.email =await _context.Contactuspagecontents.SingleOrDefaultAsync(c => c.Contenttype == "Email");
+            ViewBag.Time = await _context.Contactuspagecontents.SingleOrDefaultAsync(c => c.Contenttype == "contact Time");
+            ViewBag.message = await _context.Contactuspagecontents.SingleOrDefaultAsync(c => c.Contenttype == "message");
             return View();
         }
 
@@ -70,9 +77,10 @@ namespace MixMeal.Controllers
             return View(contactu);
         }
 
-       
 
+       
         // GET: Contactus/Delete/5
+        [CustomAuthorize(1)] // Admin
         public async Task<IActionResult> Delete(decimal? id)
         {
             if (id == null || _context.Contactus == null)
@@ -93,6 +101,7 @@ namespace MixMeal.Controllers
         // POST: Contactus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(1)] // Admin
         public async Task<IActionResult> DeleteConfirmed(decimal id)
         {
             if (_context.Contactus == null)

@@ -1,7 +1,10 @@
 ﻿@model Recipe
 @{
     Layout = "~/Views/Shared/_ChefLayout.cshtml";
+    Recipe image = ViewBag.image;
 }
+
+
 
 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -16,6 +19,8 @@
 
             <div class="modal-body px-4">
 
+                @* <input class="d-none" asp-for ="Recipeid" /> *@
+                <input class="d-none" asp-for="Chefid" value="@image.Chefid" />
                 <div class="form-group">
                     <label for="firstName">Recipe Name</label>
                     <input asp-for="Recipename" class="form-control" placeholder="Burger">
@@ -65,6 +70,7 @@
                     <div class="custom-file mb-1">
                         <input asp-for="ImageFile" class="custom-file-input">
                         <label asp-for="ImageFile" class="custom-file-label"></label>
+                        <input name="imagepath" class="d-none" value="@image.Imagepath" />
                         <span asp-validation-for="Imagepath" class="text-danger"></span>
                     </div>
                     <span class="d-block ">Upload a new cover image, JPG 1200x300</span>
@@ -82,3 +88,4 @@
         </form>
     </div>
 </div>
+

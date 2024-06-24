@@ -24,7 +24,7 @@
 <!-- breadcrumb start-->
 
 
-<section class="exclusive_item_part blog_item_section">
+<section class=" blog_item_section">
     <div class="container">
         <div class="row">
             <div class="col-xl-5">
@@ -35,12 +35,12 @@
             </div>
         </div>
         <div class="row mb-5">
-            <div class="col-sm-6 col-lg-4 mb-5">
-                <div class="single_blog_item">
+            <div class="col-sm-6 col-lg-4 mt-5 mb-5">
+                <div class="single_blog_item ">
                     <div class="single_blog_img">
                         <img src="~/Image/HomePageImage/logo2.jpeg" alt="" width="330" height="330">
                     </div>
-                    <div class="single_blog_text">
+                    <div class="single_blog_text mb-5">
                         <h3>Recipes</h3>
                        
                         <a asp-action="AllRecipes" class="btn_3">All Recipes <img src="img/icon/left_2.svg" alt=""></a>
@@ -49,7 +49,7 @@
             </div>
             @foreach (var item in Model)
             {
-                <div class="col-sm-6 col-lg-4">
+                <div class="col-sm-6 col-lg-4 mt-5 mb-5">
                     <div class="single_blog_item">
                         <div class="single_blog_img">
                             <img src="~/Image/CategoryImage/@item.Imagepath" alt="" width="330" height="330">
@@ -57,16 +57,12 @@
                         <div class="single_blog_text">
                             <h3>@item.Categoryname</h3>
                             <p>@item.Categorydescription</p>
-                            <a asp-action="RecipesByCategory" asp-route-id="@item.Categoryid" class="btn_3">Read More <img src="~/Home/img/icon/left_2.svg" alt=""></a>
+                            <a asp-action="RecipesByCategory" asp-route-id="@item.Categoryid" class="btn_3">Recipes <img src="~/Home/img/icon/left_2.svg" alt=""></a>
                         </div>
                     </div>
                 </div>
             }
         </div>
-        <div class="row">
-            <div class="col-xl-5">
-                
-            </div>
-        </div>
+     
     </div>
 </section>

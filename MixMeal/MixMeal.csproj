@@ -29,6 +29,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\Image\ContactImage\" />
     <Folder Include="wwwroot\Image\AboutPageImage\" />
+    <Folder Include="wwwroot\Image\TestimonialPageImage\" />
     <Folder Include="wwwroot\Image\RecipeImage\" />
   </ItemGroup>
 

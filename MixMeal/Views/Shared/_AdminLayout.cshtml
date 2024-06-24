@@ -4,6 +4,8 @@
 @inject IHttpContextAccessor accessor
 @{
     var userSession = accessor.HttpContext.Session.GetInt32("userSession");
+
+    User user = _context.Users.SingleOrDefault(u => u.Userid == userSession);
 }
 <!DOCTYPE html>
 
@@ -93,7 +95,7 @@
         <div id="sidebar" class="sidebar sidebar-with-footer">
                 <!-- Aplication Brand -->
                 <div class="app-brand">
-                    <a href="~/user/index.html">
+                    <a asp-controller="Home" asp-action="Index">
                         <img src="~/Image/HomePageImage/logo.svg" alt="Mono" width="50" height="50">
                         <span class="brand-name">MixMeal</span>
                     </a>
@@ -102,22 +104,28 @@
                 <div class="sidebar-left" data-simplebar style="height: 100%;">
                     <!-- sidebar menu -->
                     <ul class="nav sidebar-inner" id="sidebar-menu">
+                        <li >
+                            <a class="sidenav-item-link" asp-controller="Home" asp-action="Index">
+                                <i class="mdi mdi-home"></i>
+                                <span class="nav-text">Home</span>
+                            </a>
+                        </li>
 
 
-                        <li class="active">
+                        <li >
                             <a class="sidenav-item-link" asp-controller="Admin" asp-action="Index">
                                 <i class="mdi mdi-briefcase-account-outline"></i>
                                 <span class="nav-text">Admin Dashboard</span>
                             </a>
                         </li>
-                      
 
                         <li>
-                            <a class="sidenav-item-link" asp-controller="Categories" asp-action="Index">
-                                <i class="mdi mdi-library-books"></i>
-                                <span class="nav-text">All Category</span>
+                            <a class="sidenav-item-link" asp-controller="Admin" asp-action="Report">
+                                <i class="mdi mdi-file"></i>
+                                <span class="nav-text">Report</span>
                             </a>
                         </li>
+                      
                     
                         <li>
                             <a class="sidenav-item-link" asp-controller="Admin" asp-action="AllAdmin">
@@ -144,17 +152,79 @@
                             </a>
                         </li>
                         <li>
-                            <a class="sidenav-item-link" asp-controller="Admin" asp-action="Testimonials" >
-                                <i class="mdi mdi-account-multiple"></i>
-                                <span class="nav-text">Testimonials</span>
+                            <a class="sidenav-item-link" asp-controller="Categories" asp-action="Index">
+                                <i class="mdi mdi-library-books"></i>
+                                <span class="nav-text">All Category</span>
                             </a>
                         </li>
                         <li>
                             <a class="sidenav-item-link" asp-controller="Admin" asp-action="AccepttedRecipe">
-                                <i class="mdi mdi-account-multiple"></i>
-                                <span class="nav-text">Accepted Recipe</span>
+                                <i class="mdi mdi-library-books"></i>
+                                <span class="nav-text">Recipes</span>
                             </a>
                         </li>
+                        <li>
+                            <a class="sidenav-item-link" asp-controller="Admin" asp-action="Testimonials" >
+                                <i class="mdi mdi-comment"></i>
+                                <span class="nav-text">Testimonials</span>
+                            </a>
+                        </li>
+
+
+
+
+
+
+
+                        <li>
+                            <a class="sidenav-item-link" asp-controller="Homepagecontents" asp-action="Index">
+                                <i class="mdi mdi-page-previous"></i>
+                                <span class="nav-text">Manage Home Page</span>
+                            </a>
+                        </li>
+
+
+
+                        <li>
+                            <a class="sidenav-item-link" asp-controller="Testimonialpagecontents" asp-action="Index">
+                                <i class="mdi mdi-page-previous"></i>
+                                <span class="nav-text">Manage Testimonials Page</span>
+                            </a>
+                        </li>
+
+
+
+                    
+
+
+                        <li>
+                            <a class="sidenav-item-link" asp-controller="Contactuspagecontents" asp-action="Index">
+                                <i class="mdi mdi-page-previous"></i>
+                                <span class="nav-text">Manage ContactUs Page</span>
+                            </a>
+                        </li>
+
+
+
+                        <li>
+                            <a class="sidenav-item-link" asp-controller="Aboutpagecontents" asp-action="Index">
+                                <i class="mdi mdi-page-previous"></i>
+                                <span class="nav-text">Manage AboutUs Page</span>
+                            </a>
+                        </li>
+                       
+
+
+
+
+
+
+
+
+
+
+
+
                         <li class="has-sub">
                             <a class="sidenav-item-link" href="~/user/javascript:void(0)" data-toggle="collapse" data-target="#email"
                                aria-expanded="false" aria-controls="email">
@@ -232,8 +302,8 @@
                         <!-- User Account -->
                         <li class="dropdown user-menu">
                             <button class="dropdown-toggle nav-link" data-toggle="dropdown">
-                                <img src="~/user/images/user/user-xs-01.jpg" class="user-image rounded-circle" alt="User Image" />
-                                <span class="d-none d-lg-inline-block">John Doe</span>
+                                <img src="~/Image/personalImage/@user.Imagepath" class="user-image rounded-circle" alt="User Image" />
+                                <span class="d-none d-lg-inline-block">@user.Firstname @user.Lastname</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
@@ -279,7 +349,7 @@
         <footer class="footer mt-auto">
             <div class="copyright bg-white">
                 <p>
-                    &copy; <span id="copy-year"></span> Copyright Mono Dashboard Bootstrap Template by <a class="text-primary" href="~/user/http://www.iamabdus.com/" target="_blank">Abdus</a>.
+                    &copy; <span id="copy-year"></span> Copyright Mix Meal.
                 </p>
             </div>
             <script>

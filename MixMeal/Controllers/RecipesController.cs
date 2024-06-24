@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using MixMeal.Models;
 using MixMeal.PDFGenerator;
 using MixMeal.EmailSender;
+using MixMeal.customAuth;
 
 namespace MixMeal.Controllers
 {
+    
     public class RecipesController : Controller
     {
         private readonly ModelContext _context;
@@ -24,6 +26,7 @@ namespace MixMeal.Controllers
         }
 
         // GET: Recipes
+        
         public async Task<IActionResult> Index()
         {
             var modelContext = _context.Recipes.Include(r => r.Category).Include(r => r.Chef).Include(r => r.Recipestatus)
@@ -32,6 +35,7 @@ namespace MixMeal.Controllers
         }
 
         // GET: Recipes/Details/5
+       
         public async Task<IActionResult> Details(decimal? id)
         {
             if (id == null || _context.Recipes == null)
@@ -111,7 +115,7 @@ namespace MixMeal.Controllers
                     recipe.Chefid = chefId;
                     _context.Add(recipe);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("MyRecipe","Chef");
+                    return RedirectToAction("MyRecipes", "Chef");
                 
             }
             ViewData["Categoryid"] = new SelectList(_context.Categories, "Categoryid", "Categoryid", recipe.Categoryid);
@@ -120,7 +124,21 @@ namespace MixMeal.Controllers
             return View(recipe);
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
         // GET: Recipes/Edit/5
+        
         public async Task<IActionResult> Edit(decimal? id)
         {
             var ChefId = HttpContext.Session.GetInt32("chefSession");
@@ -131,12 +149,13 @@ namespace MixMeal.Controllers
             }
 
             var recipe = await _context.Recipes.FindAsync(id);
+            ViewBag.image = recipe;
 
             if (recipe == null || recipe.Chefid != ChefId)
             {
                 return NotFound();
             }
-            ViewData["Categoryid"] = new SelectList(_context.Categories, "Categoryid", "Categoryid", recipe.Categoryid);
+            ViewData["Categoryid"] = new SelectList(_context.Categories, "Categoryid", "Categoryname");
             ViewData["Chefid"] = new SelectList(_context.Users, "Userid", "Userid", recipe.Chefid);
             ViewData["Recipestatusid"] = new SelectList(_context.Statuses, "Statusid", "Statusid", recipe.Recipestatusid);
             return View(recipe);
@@ -146,23 +165,53 @@ namespace MixMeal.Controllers
       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(decimal id, [Bind("Recipeid,Recipename,Imagepath,Publishdate,Price,Categoryid,Chefid,Recipestatusid,Recipedescription,Ingredientname,Instructions")] Recipe recipe)
+       
+        public async Task<IActionResult> Edit(decimal id, [Bind("Recipename,Publishdate,ImageFile,Price,Categoryid,Recipedescription,Ingredientname,Instructions")] RecipeViewModel recipeViewModel , string? imagepath)
         {
-            if (id != recipe.Recipeid)
+            var existingRecipe = await _context.Recipes.FindAsync(id);
+            if (existingRecipe == null)
             {
                 return NotFound();
             }
-
+            if (id != existingRecipe.Recipeid)
+            {
+                return NotFound();
+            }
+            
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(recipe);
+                    if (recipeViewModel.ImageFile != null)
+                    {
+                        string wwwrootPath = _webHostEnvironment.WebRootPath;
+                        string imageName = Guid.NewGuid().ToString() + "_" + recipeViewModel.ImageFile.FileName;
+                        string fullPath = Path.Combine(wwwrootPath + "/Image/RecipeImage/", imageName);
+                        using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            await recipeViewModel.ImageFile.CopyToAsync(fileStream);
+                        }
+                        existingRecipe.Imagepath = imageName;
+                    }
+                    else
+                    {
+                        existingRecipe.Imagepath = imagepath;
+                    }
+                    existingRecipe.Recipename = recipeViewModel.Recipename;
+                   
+                    existingRecipe.Price = recipeViewModel.Price;
+                    existingRecipe.Categoryid = recipeViewModel.Categoryid;
+                    existingRecipe.Recipestatusid = 2;
+                    existingRecipe.Recipedescription = recipeViewModel.Recipedescription;
+                    existingRecipe.Ingredientname = recipeViewModel.Ingredientname;
+                    existingRecipe.Instructions = recipeViewModel.Instructions;
+
+                    _context.Update(existingRecipe);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RecipeExists(recipe.Recipeid))
+                    if (!RecipeExists(existingRecipe.Recipeid))
                     {
                         return NotFound();
                     }
@@ -171,13 +220,57 @@ namespace MixMeal.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("MyRecipes", "Chef");
             }
-            ViewData["Categoryid"] = new SelectList(_context.Categories, "Categoryid", "Categoryid", recipe.Categoryid);
-            ViewData["Chefid"] = new SelectList(_context.Users, "Userid", "Userid", recipe.Chefid);
-            ViewData["Recipestatusid"] = new SelectList(_context.Statuses, "Statusid", "Statusid", recipe.Recipestatusid);
-            return View(recipe);
+            ViewData["Categoryid"] = new SelectList(_context.Categories, "Categoryid", "Categoryname");
+            ViewData["Chefid"] = new SelectList(_context.Users, "Userid", "Userid", existingRecipe.Chefid);
+            ViewData["Recipestatusid"] = new SelectList(_context.Statuses, "Statusid", "Statusid", existingRecipe.Recipestatusid);
+            return View(existingRecipe);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // GET: Recipes/Delete/5
         public async Task<IActionResult> Delete(decimal? id)
@@ -228,38 +321,7 @@ namespace MixMeal.Controllers
 
 
 
-        public async Task <IActionResult> UpdatePdfOnPurchase(decimal id)
-        {
-            var recipe = await _context.Recipes
-                                 .Include(r => r.Category)
-                                 .Include(r => r.Chef)
-                                 .Include(r => r.Recipestatus)
-                                 .SingleOrDefaultAsync(r => r.Recipeid == id);
-            if (recipe == null)
-            {
-                return NotFound();
-            }
-            
-            var pdfUpdater = new PDFG(_context , _webHostEnvironment);
-            string filePath = pdfUpdater.UpdateRecipePdf(recipe);
-
-            var CustId = HttpContext.Session.GetInt32("CustomerSession");
-            var customer = await _context.Userlogins.Include(user => user.User)
-                                        .Where(customers=>customers.Userid == CustId).SingleOrDefaultAsync();
-            // Send email with the PDF attachment
-            string recipientEmail = customer.Email;
-            string subject = "Your Recipe PDF";
-            string body = "Dear Customer, please find attached your recipe PDF.";
-            SendEmail send = new SendEmail();
-
-            send.SendEmailWithPDF(recipientEmail, subject, body, filePath);
-
-            
-
-            
-            return RedirectToAction("thanks", "Recipes");
-        }
-
+        
 
 
         public IActionResult thanks()

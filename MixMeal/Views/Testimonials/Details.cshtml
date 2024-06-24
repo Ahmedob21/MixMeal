@@ -4,40 +4,25 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<div class="card-header">
 
-<h1>Details</h1>
+    <a asp-controller="Admin" asp-action="Testimonials" class="mb-1 btn btn-primary">Back</a>
 
-<div>
-    <h4>Testimonial</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ucomment)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ucomment)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Posteddate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Posteddate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cust)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cust.Userid)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Testimonialstatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Testimonialstatus.Statusid)
-        </dd>
-    </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Testumonialid">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+
+  
+
+
+<div class="owl-carousel owl-theme carousel-testimonial justify-content-center">
+    <div class="card border-0 text-center">
+        <img src="~/Image/personalImage/@Model.Cust.Imagepath" class="rounded-circle mb-3 mx-auto" alt="User Image" height="120" width="120">
+        <div class="card-body">
+            <p class="mb-4">
+                @Model.Ucomment
+            </p>
+            <span class="h4 d-block">@Model.Cust.Firstname @Model.Cust.Lastname</span>
+            <span>@Model.Cust.Role.Rolename</span>
+        </div>
+    </div>
 </div>

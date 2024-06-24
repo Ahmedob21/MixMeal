@@ -45,13 +45,13 @@
     <div class="card-body">
 
 
-        <table  class="table table-hover table-product" style="width:100%">
+        <table class="table">
             <thead>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.Imagepath)</th>
                     <th>@Html.DisplayNameFor(model => model.Recipename)</th>
                     <th>@Html.DisplayNameFor(model => model.Category.Categoryname)</th>
-                    <th>@Html.DisplayNameFor(model => model.Chef.Firstname)</th>
+                    <th>Chef @Html.DisplayNameFor(model => model.Chef.Username)</th>
                     <th>@Html.DisplayNameFor(model => model.Recipestatus.Statusname)</th>
                     <th>@Html.DisplayNameFor(model => model.Price)</th>
                     <th>@Html.DisplayNameFor(model => model.Publishdate)</th>
@@ -68,12 +68,12 @@
                     <tr>
 
                         <td>
-                            <img src="~/image/RecipeImage/@item.Imagepath" alt="Product Image" width="150" height="180">
+                            <img src="~/image/RecipeImage/@item.Imagepath" alt="Product Image" width="100" height="100">
                         </td>
 
                         <td>@item.Recipename</td>
                         <td>@item.Category.Categoryname</td>
-                        <td>@item.Chef.Firstname @item.Chef.Lastname</td>
+                        <td>@("@"+@item.Chef.Username)</td>
                         <td>@item.Recipestatus.Statusname</td>
                         <td>$@item.Price</td>
                         <td>@item.Publishdate</td>

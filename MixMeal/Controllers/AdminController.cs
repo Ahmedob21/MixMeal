@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MixMeal.customAuth;
 using MixMeal.Models;
+using SQLitePCL;
 using System.Linq;
 
 namespace MixMeal.Controllers
 {
+    [CustomAuthorize(1)] // Admin
     public class AdminController : Controller
     {
         private readonly ModelContext _context;
@@ -30,9 +33,22 @@ namespace MixMeal.Controllers
             ViewBag.PendingRecipe = _context.Recipes.Where(recipe => recipe.Recipestatus.Statusname == "Pending").Count();
             ViewBag.RejectedRecipe = _context.Recipes.Where(recipe => recipe.Recipestatus.Statusname == "Rejected").Count();
 
-            //ViewBag.CategoryName = await _context.Recipes.Include(category => category.Category).ToListAsync();
+            
+            var purchases = _context.Purchases.Include(p => p.Recipe).ToList();
+            var purchaseCounts = purchases.GroupBy(p => p.Recipe.Recipename)
+                                          .Select(g => new { RecipeName = g.Key, Count = g.Count() })
+                                          .ToList();
+
+            ViewBag.RecipeNames = purchaseCounts.Select(p => p.RecipeName).ToList();
+            ViewBag.PurchaseCounts = purchaseCounts.Select(p => p.Count).ToList();
+            ViewBag.LineData = new List<int> { 50, 50, 50, 50 }; 
 
 
+            ViewBag.MonthlySales = _context.Purchases.Where(p=>p.Purchasedate.Month == DateTime.Now.Month).Sum(p=>p.Earnings);
+            ViewBag.yearSales = _context.Purchases.Where(p => p.Purchasedate.Year == DateTime.Now.Year).Sum(p => p.Earnings);
+            ViewBag.sales = _context.Purchases.Sum(p => p.Earnings);
+            ViewBag.TotalOrder = _context.Purchases.Count();
+            ViewBag.CategoryCount = _context.Categories.Count();
             return View();
         }
 
@@ -46,14 +62,15 @@ namespace MixMeal.Controllers
                 .Include(chef => chef.Recipe.Chef)
                 .Include(category => category.Recipe.Category).ToListAsync();
 
-            // Counting total purchases
+            
             ViewBag.TotalPurchases = report.Count();
+         
 
-            // Calculating total earnings
+            
             decimal totalEarnings = report.Sum(purchase => purchase.Earnings);
             ViewBag.TotalEarnings = totalEarnings;
 
-            // Getting unique categories
+            
             var uniqueCategories = report.Select(purchase => purchase.Recipe.Category.Categoryname).Distinct().ToList();
             ViewBag.UniqueCategories = uniqueCategories;
             return View(report);
@@ -70,6 +87,9 @@ namespace MixMeal.Controllers
                 .Where(p => p.Purchasedate.Year == year && p.Purchasedate.Month == month)
                 .ToListAsync();
 
+            decimal totalEarnings = report.Sum(purchase => purchase.Earnings);
+            ViewBag.TotalEarnings = totalEarnings;
+
             return View(report);
         }
 
@@ -83,6 +103,10 @@ namespace MixMeal.Controllers
                 .Include(p => p.Recipe.Chef)
                 .Where(p => p.Purchasedate.Year == year)
                 .ToListAsync();
+            ViewBag.Year= year;
+
+            decimal totalEarnings = report.Sum(purchase => purchase.Earnings);
+            ViewBag.TotalEarnings = totalEarnings;
 
             return View(report);
         }
@@ -100,6 +124,25 @@ namespace MixMeal.Controllers
         {
             if (ModelState.IsValid)
             {
+                bool emailExists = await _context.Userlogins.AnyAsync(u => u.Email.ToLower() == registerViewModel.Email.ToLower());
+                if (emailExists)
+                {
+                    ViewData["Genderid"] = new SelectList(_context.Genders, "Genderid", "Gendername");
+                    ModelState.AddModelError("Email", "Email already exists.");
+                    ViewBag.gender = new SelectList(_context.Genders, "GenderId", "GenderId", registerViewModel.Genderid);
+                    return View(registerViewModel);
+                }
+
+
+                bool usernameExists = await _context.Users.AnyAsync(u => u.Username.ToLower() == registerViewModel.Username.ToLower());
+                if (usernameExists)
+                {
+                    ViewData["Genderid"] = new SelectList(_context.Genders, "Genderid", "Gendername");
+                    ModelState.AddModelError("Username", "Username already exists.");
+                    ViewBag.gender = new SelectList(_context.Genders, "GenderId", "GenderId", registerViewModel.Genderid);
+                    return View(registerViewModel);
+                }
+
                 User user = new();
                 user.Firstname = registerViewModel.Firstname;
                 user.Lastname = registerViewModel.Lastname;
@@ -260,36 +303,6 @@ namespace MixMeal.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Recipe Section
         public async Task<IActionResult> AccepttedRecipe()
         {
@@ -323,7 +336,6 @@ namespace MixMeal.Controllers
         }
 
 
-
         public async Task<IActionResult> RecipeDetails(decimal? id)
         {
             if (id == null || _context.Recipes == null)
@@ -345,7 +357,7 @@ namespace MixMeal.Controllers
         }
 
 
-        // GET: Recipes/Delete/5
+        [HttpGet]
         public async Task<IActionResult> DeleteRecipe(decimal? id)
         {
             //var ChefId = HttpContext.Session.GetInt32("chefSession");
@@ -439,8 +451,6 @@ namespace MixMeal.Controllers
             return View(testimonial);
         }
 
-
-
         public async Task<IActionResult> PendingTestimonials()
         {
             var testimonial = await _context.Testimonials.Include(user => user.Cust).Include(status => status.Testimonialstatus)
@@ -448,7 +458,6 @@ namespace MixMeal.Controllers
                                                          
             return View(testimonial);
         }
-
 
         public async Task<IActionResult> AcceptTestimonials(decimal id)
         {
@@ -468,7 +477,6 @@ namespace MixMeal.Controllers
             return RedirectToAction(nameof(PendingTestimonials));
         }
 
-
         public async Task<IActionResult> RejectTestimonials(decimal? id)
         {
             if (id == null || _context.Testimonials == null)
@@ -487,41 +495,14 @@ namespace MixMeal.Controllers
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            public IActionResult SearchByDate()
-            {
-            var result = _context.Recipes
-                .Include(x => x.Category)
-                .Include(x => x.Chef)
-                .ToList();
-            return View(result);
-            }
+        public IActionResult SearchByDate()
+        {
+        var result = _context.Recipes
+            .Include(x => x.Category)
+            .Include(x => x.Chef)
+            .ToList();
+        return View(result);
+        }
 
 
         [HttpPost]
@@ -576,16 +557,7 @@ namespace MixMeal.Controllers
                     .ToList();
                 return View(result);
             }
-
         }
-
-
-
-
-
-
-
-
 
         public IActionResult empty()
         {

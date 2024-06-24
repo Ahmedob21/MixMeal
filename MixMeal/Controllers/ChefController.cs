@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MixMeal.customAuth;
 using MixMeal.Models;
 
 namespace MixMeal.Controllers
 {
+    [CustomAuthorize(2)] // Chef
     public class ChefController : Controller
     {
 
@@ -76,7 +78,7 @@ namespace MixMeal.Controllers
             var chefid = HttpContext.Session.GetInt32("chefSession");
             if (chefid == null)
             {
-                return new List<Recipe>(); // Return an empty list if chefid is null
+                return new List<Recipe>(); 
             }
 
             return await _context.Recipes
@@ -96,7 +98,7 @@ namespace MixMeal.Controllers
             }
             if(chefid != id)
             {
-                return RedirectToAction("accessPermissions" , "Account");
+                return RedirectToAction("AccessDenied" , "Account");
             }
 
 

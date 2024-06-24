@@ -11,38 +11,40 @@
     </div>
 
     <div class="card-body">
-<table id="example" class="display">
-    <thead>
-        <tr>
-            <th>Customer @Html.DisplayNameFor(model => model.Customer.Username)</th>
-            <th>@Html.DisplayNameFor(model => model.Recipe.Recipename)</th>
-            <th>@Html.DisplayNameFor(model => model.Recipe.Price)</th>
-            <th>@Html.DisplayNameFor(model => model.Recipe.Category.Categoryname)</th>
-            @* <th>@Html.DisplayNameFor(model => model.Recipe.Imagepath)</th> *@
+        <table id="example" class="display">
+            <thead>
+                <tr>
+                    <th>Customer @Html.DisplayNameFor(model => model.Customer.Username)</th>
+                    <th>@Html.DisplayNameFor(model => model.Recipe.Recipename)</th>
+                    <th>@Html.DisplayNameFor(model => model.Recipe.Price)</th>
+                            <th>Tax</th>
+                    <th>@Html.DisplayNameFor(model => model.Recipe.Publishdate)</th>
+                    <th>@Html.DisplayNameFor(model => model.Recipe.Category.Categoryname)</th>
+                    @* <th>@Html.DisplayNameFor(model => model.Recipe.Imagepath)</th> *@
 
             
-        </tr>
-    </thead>
-    <tbody>
+                </tr>
+            </thead>
+            <tbody>
         
-        @foreach (var item in Model)
-        {
-            <tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
 
-                <td>@item.Customer.Username</td>
-                <td>@item.Recipe.Recipename</td>
-                <td>@item.Recipe.Price</td>
-                <td>@item.Recipe.Category.Categoryname</td>
-                @* <td> <img src="~/image/RecipeImage/@item.Recipe.Imagepath" alt="Product Image"></td> *@
+                        <td>@item.Customer.Username</td>
+                        <td>@item.Recipe.Recipename</td>
+                        <td>$@item.Recipe.Price</td>
+                        <td>$@item.Earnings</td>
+                        <td>@item.Purchasedate.DateTime</td>
+                        <td>@item.Recipe.Category.Categoryname</td>
+                        @* <td> <img src="~/image/RecipeImage/@item.Recipe.Imagepath" alt="Product Image"></td> *@
                
-            </tr>
-        }
+                    </tr>
+                }
         
-    </tbody>
-</table>
-
-
-</div>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 
@@ -53,10 +55,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js" defer></script>
-
-
-
-
 
 
 

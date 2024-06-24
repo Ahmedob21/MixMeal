@@ -1,0 +1,58 @@
+﻿@model MixMeal.Models.Testimonialpagecontent
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AuthenticationLayout.cshtml";
+    Testimonialpagecontent testi = ViewBag.Testimonial;
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="modal-dialog modal-xl modal-dialog-centered justfiy-content-center" role="document">
+        <form asp-action="Edit" enctype="multipart/form-data" method="post">
+            <div class="modal-content">
+                <div class="modal-header align-items-center p3 p-md-5">
+                    <h2 class="modal-title" id="exampleModalGridTitle">Edit Content</h2>
+                    <div>
+                        <a asp-action="Index" class="btn btn-sm btn-secondary "> Cancel</a>
+                        <button type="submit" class="btn btn-sm btn-primary" data-dismiss="modal"> save </button>
+                    </div>
+
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="modal-body p3 p-md-5 ">
+                    <div class="row m-1">
+                        <input asp-for="Testimonialpagecontentid" class="d-none" placeholder="Content type">
+
+                        <div class="form-group mb-5 col-12">
+                            <label asp-for="Contenttype"></label>
+                            <input asp-for="Contenttype" class="form-control" placeholder="Content type">
+                            <span asp-validation-for="Contenttype" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="row m-1 col-12">
+                        <div class="form-group mb-0">
+                            <label asp-for="Content"></label>
+                            <textarea asp-for="Content" class="form-control" rows="10" cols="100"></textarea>
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row m-1 mt-3">
+                        <label asp-for="ImageFile" class="col-sm-4 col-lg-2 col-form-label"></label>
+                        <div class="col-sm-8 col-lg-10">
+                            <div class="custom-file mb-1">
+                                <input asp-for="ImageFile" class="custom-file-input">
+                                <label asp-for="ImageFile" class="custom-file-label"></label>
+                                <input name="imagepath"  class="d-none" value="@testi.Imagepath"/>
+                                <span asp-validation-for="Imagepath" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

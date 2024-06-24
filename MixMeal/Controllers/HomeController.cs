@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MixMeal.Models;
 using System.Diagnostics;
@@ -24,15 +25,13 @@ namespace MixMeal.Controllers
 
         public async  Task<IActionResult> Index()
         {
-            var category = _context.Categories.ToList();
-
-            //ViewBag.commonrecipes = await _context.Purchases.Include(recipe => recipe.Recipe).Include(category => category.Recipe.Category)
-            //    .Include(chef => chef.Recipe.Chef) .Where(commonrecipe => commonrecipe)
-
-
-
-
-            return View(category);
+            var popularCategories = _context.Categories.OrderByDescending(c => c.Recipes.Count()).Take(3).ToList();
+            ViewBag.popular = popularCategories;
+                
+            var chefs = _context.Users.Include(user => user.Role).Where(userRole => userRole.Role.Rolename == "Chef").OrderByDescending(c => c.Recipes.Count()).Take(3).ToList();
+            ViewBag.popularChef = chefs;
+            ViewBag.image1 = await _context.Homepagecontents.SingleOrDefaultAsync(content => content.Contenttype == "image(1)");
+            return View();
         }
         public async Task<IActionResult> AllCategories()
         {
@@ -62,6 +61,7 @@ namespace MixMeal.Controllers
         }
         public IActionResult EmptyByCategory()
         {
+           
             return View();
         }
 
@@ -108,6 +108,9 @@ namespace MixMeal.Controllers
             var testimonial = await _context.Testimonials.Include(user => user.Cust).Include(role =>role.Cust.Role)
                 .Include(status => status.Testimonialstatus)
                 .Where(statusName => statusName.Testimonialstatus.Statusname == "Accepted").ToListAsync();
+            ViewBag.p = await _context.Testimonialpagecontents.SingleOrDefaultAsync(content => content.Contenttype == "p");
+            ViewBag.h2 = await _context.Testimonialpagecontents.SingleOrDefaultAsync(content => content.Contenttype == "h2");
+
             return View(testimonial);
         }
 
@@ -120,17 +123,17 @@ namespace MixMeal.Controllers
 
 
 
-        [HttpGet]
-        [Route("Home/search-by-name")]
-        public IActionResult SearchByName()
-        {
-            var result = _context.Recipes
-                .Include(x => x.Category)
-                .Include(x => x.Chef)
-                .ToList();
-            return View(result);
-        }
-        [HttpPost]
+        //[HttpGet]
+        //[Route("Home/search-by-name")]
+        //public IActionResult SearchByName()
+        //{
+        //    var result = _context.Recipes
+        //        .Include(x => x.Category)
+        //        .Include(x => x.Chef)
+        //        .ToList();
+        //    return View(result);
+        //}
+        
         [Route("Home/search-by-name")]
         public IActionResult SearchByName(string? RecipeName)
         {
@@ -150,7 +153,15 @@ namespace MixMeal.Controllers
         }
 
 
-
+        public async Task<IActionResult> AboutUs()
+        {
+            ViewBag.image = await _context.Aboutpagecontents.SingleOrDefaultAsync(content => content.Contenttype == "image1");
+            ViewBag.h5 = await _context.Aboutpagecontents.SingleOrDefaultAsync(content => content.Contenttype == "h5");
+            ViewBag.h2 = await _context.Aboutpagecontents.SingleOrDefaultAsync(content => content.Contenttype == "h2");
+            ViewBag.p = await _context.Aboutpagecontents.SingleOrDefaultAsync(content => content.Contenttype == "p");
+            ViewBag.h4 = await _context.Aboutpagecontents.SingleOrDefaultAsync(content => content.Contenttype == "h4");
+            return View();
+        }
 
 
 

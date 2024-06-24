@@ -2,40 +2,108 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<div class="card card-default">
+        <div class="card-header">
 
-<h2>Annual Report</h2>
-<p>Showing sales for the year @ViewBag.Year</p>
+            <h2>Annual Report</h2>
+            <p>Showing sales for the year @ViewBag.Year</p>
+        </div>
+        <div class="card-header">
 
-<table id="reportTable" class="display">
-    <thead>
-        <tr>
-            <th>Customer</th>
-            <th>Recipe</th>
-            <th>Price</th>
-            <th>Earnings</th>
-            <th>Category</th>
-            <th>Image</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Customer.Username</td>
-                <td>@item.Recipe.Recipename</td>
-                <td>@item.Recipe.Price</td>
-                <td>@item.Earnings</td>
-                <td>@item.Recipe.Category.Categoryname</td>
-                <td><img src="~/image/RecipeImage/@item.Recipe.Imagepath" alt="Recipe Image" width="80" height="80"></td>
-            </tr>
-        }
-    </tbody>
-</table>
+            <form asp-action="AnnualReport" method="get" class="form-inline mb-3">
+                <div class="form-group mr-2">
+                    <label for="year" class="mr-2">Year:</label>
+                    <input type="number" id="year" name="year" class="form-control" value="@DateTime.Now.Year" />
+                </div>
+                <button type="submit" class="btn btn-primary">Generate Report</button>
+            </form>
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js" defer></script>
+            <form asp-action="MonthlyReport" method="get" class="form-inline mb-3">
+                <div class="form-group mr-2">
+                    <label for="month" class="mr-2">Month:</label>
+                    <select id="month" name="month" class="form-control">
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group mr-2">
+                    <label for="year" class="mr-2">Year:</label>
+                    <input type="number" id="year" name="year" class="form-control" value="@DateTime.Now.Year" />
+                </div>
+                <button type="submit" class="btn btn-primary">Generate Report</button>
+            </form>
+        </div>
+
+
+    <div class="card-body">
+        <table id="example" class="display">
+            <thead>
+                <tr>
+                    <th>Customer @Html.DisplayNameFor(model => model.Customer.Username)</th>
+                    <th>@Html.DisplayNameFor(model => model.Recipe.Recipename)</th>
+                    <th>@Html.DisplayNameFor(model => model.Recipe.Price)</th>
+                    <th>@Html.DisplayNameFor(model => model.Earnings)</th>
+                    <th>@Html.DisplayNameFor(model => model.Recipe.Category.Categoryname)</th>
+                    <th>@Html.DisplayNameFor(model => model.Purchasedate)</th>
+                    <th>@Html.DisplayNameFor(model => model.Recipe.Imagepath)</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Customer.Username</td>
+                        <td>@item.Recipe.Recipename</td>
+                        <td>$@item.Recipe.Price</td>
+                        <td>$@item.Earnings</td>
+                        <td>@item.Recipe.Category.Categoryname</td>
+                        <td>@item.Recipe.Publishdate.DateTime</td>
+                        <td><img src="~/image/RecipeImage/@item.Recipe.Imagepath" alt="Recipe Image" width="80" height="80"></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js" defer></script>
 <script>
     $(document).ready(function () {
-        $('#reportTable').DataTable();
+        $('#example').DataTable({
+            dom: 'Bfrtip',
+            order: [[3, 'desc']],
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
+        });
     });
 </script>
+
+
+
+<div class="card card-default">
+    <div class="card-header">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Total profits</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="row">1</td>
+                    <td>$@ViewBag.TotalEarnings</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

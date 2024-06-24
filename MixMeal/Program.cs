@@ -14,19 +14,21 @@ namespace MixMeal
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<ModelContext>(x => x.UseOracle(builder.Configuration.GetConnectionString("MixMeal")));
             builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+            
             builder.Services.AddSession(options => {
 
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
 
             });
             builder.Services.AddHttpContextAccessor();
-            // builder.Services.AddAuthentication("CookieAuth")
-            //       .AddCookie("CookieAuth", options =>
-            //     {
-            //    options.LoginPath = "/Account/Login"; // Specify your login path
-            //      options.AccessDeniedPath = "/Home/AccessDenied"; // Redirect here when access is denied
-            //   });
-
+            builder.Services.AddAuthentication("CookieAuth")
+                  .AddCookie("CookieAuth", options =>
+                {
+                    options.LoginPath = "/Account/Login"; // Specify your login path
+                    options.LogoutPath = "/Account/Logout";
+                    options.AccessDeniedPath = "/Account/AccessDenied"; // Redirect here when access is denied
+                });
+        
 
             var app = builder.Build();
 
@@ -42,7 +44,8 @@ namespace MixMeal
             app.UseStaticFiles();
             app.UseSession();
             app.UseRouting();
-
+            
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
@@ -51,11 +54,11 @@ namespace MixMeal
 
             app.MapControllerRoute(
                  name: "monthlyReport",
-                 pattern: "{controller=Reports}/{action=MonthlyReport}/{year?}/{month?}");
+                 pattern: "{controller=Admin}/{action=MonthlyReport}/{year?}/{month?}");
 
             app.MapControllerRoute(
                  name: "annualReport",
-                 pattern: "{controller=Reports}/{action=AnnualReport}/{year?}");
+                 pattern: "{controller=Admin}/{action=AnnualReport}/{year?}");
             app.Run();
         }
     }

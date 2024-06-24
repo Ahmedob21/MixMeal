@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MixMeal.customAuth;
 using MixMeal.Models;
 
 namespace MixMeal.Controllers
 {
+    [CustomAuthorize(1)] // Admin
     public class CategoriesController : Controller
     {
         private readonly ModelContext _context;
@@ -23,9 +25,13 @@ namespace MixMeal.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-              return _context.Categories != null ? 
-                          View(await _context.Categories.ToListAsync()) :
-                          Problem("Entity set 'ModelContext.Categories'  is null.");
+            var category = await _context.Categories.ToListAsync();
+            if(category == null)
+            {
+                Problem("Entity set 'ModelContext.Categories'  is null.");
+            }
+                        
+            return View(category);
         }
 
         // GET: Categories/Details/5
@@ -104,6 +110,7 @@ namespace MixMeal.Controllers
             }
 
             var category = await _context.Categories.FindAsync(id);
+            ViewBag.image = category;
             if (category == null)
             {
                 return NotFound();
@@ -116,12 +123,13 @@ namespace MixMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(decimal id, [Bind("Categoryid,Categoryname,Categorydescription,ImageFile")] Category category)
+        public async Task<IActionResult> Edit(decimal id, [Bind("Categoryid,Categoryname,Categorydescription,ImageFile")] Category category , string? imagepath)
         {
             if (id != category.Categoryid)
             {
                 return NotFound();
             }
+          
 
             if (ModelState.IsValid)
             {
@@ -140,8 +148,10 @@ namespace MixMeal.Controllers
                     }
                     else
                     {
-                        category.Imagepath = "default.jpg";
+                        category.Imagepath = imagepath;
                     }
+                   
+                   
                     _context.Update(category);
                     await _context.SaveChangesAsync();
                 }

@@ -36,6 +36,7 @@ namespace MixMeal.Models
         [DataType(DataType.Date)]
         public DateTime Bithdate { get; set; }
         [DisplayName("Gender")]
+        [Required]
         public decimal Genderid { get; set; }
 
     }

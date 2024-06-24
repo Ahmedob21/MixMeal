@@ -1,8 +1,17 @@
-﻿@model IEnumerable<Category>
+﻿@* @model IEnumerable<Category> *@
+@using Microsoft.AspNetCore.Http
+@inject ModelContext _context
+@inject IHttpContextAccessor accessor
 @{
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
-   // var categories = ViewBag.category;
-} 
+    var userSession = accessor.HttpContext.Session.GetInt32("userSession");
+
+    bool isAuthenticated = accessor.HttpContext.Session.GetInt32("userSession") != null;
+
+  List<User> chef =  ViewBag.popularChef;
+    
+}
+
  
 
 <!-- banner part start-->
@@ -43,18 +52,18 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            @foreach (var item in Model)
+        <div class="row mb-3">
+            @foreach (var item in ViewBag.popular)
             {
-                <div class="col-sm-6 col-lg-4">
+                <div class="col-sm-6 col-lg-4 mb-5">
                     <div class="single_blog_item">
                         <div class="single_blog_img">
-                             <img src="~/Image/CategoryImage/@item.Imagepath" alt="">
+                            <img src="~/Image/CategoryImage/@item.Imagepath" alt="" width="330" height="330">
                          </div>
                         <div class="single_blog_text">
                             <h3>@item.Categoryname</h3>
                             <p>@item.Categorydescription</p>
-                            <a href="#" class="btn_3">Read More <img src="~/Home/img/icon/left_2.svg" alt=""></a>
+                            <a asp-action="RecipesByCategory" asp-route-id="@item.Categoryid" class="btn_3">Read More <img src="~/Home/img/icon/left_2.svg" alt=""></a>
                          </div>
                     </div>
                 </div>
@@ -85,7 +94,7 @@
                         abundantly bearing, him, gathering you
                         blessed bearing he our position best ticket in month hole deep
                     </p>
-                    <a href="#" class="btn_3">Read More <img src="~/Home/img/icon/left_2.svg" alt=""></a>
+                    <a asp-action="AboutUs" class="btn_3">Read More <img src="~/Home/img/icon/left_2.svg" alt=""></a>
                 </div>
             </div>
         </div>
@@ -109,17 +118,20 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6 col-lg-4">
-                <div class="single_blog_item">
-                    <div class="single_blog_img">
-                        <img src="~/Home/img/team/chefs_1.png" alt="">
-                    </div>
-                    <div class="single_blog_text text-center">
-                        <h3>Adam Billiard</h3>
-                        <p>Chef Master</p>
+            @foreach (var item in chef)
+            {
+                <div class="col-sm-6 col-lg-4">
+                    <div class="single_blog_item">
+                        <div class="single_blog_img">
+                            <img src="~/Image/personalImage/@item.Imagepath" alt="" width="330" height="330">
+                        </div>
+                        <div class="single_blog_text text-center">
+                            <h3>@item.Firstname @item.Lastname</h3>
+                            <p>@("@"+ @item.Username)</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
     </div>
 </section>

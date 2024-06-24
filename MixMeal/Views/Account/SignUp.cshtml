@@ -27,13 +27,13 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group col-md-12 mb-4">
-                                        <input asp-for="Firstname" class="form-control input-lg" placeholder="First Name">
+                                        <input asp-for="Firstname" class="form-control input-lg" placeholder="First Name" required>
                                         <span asp-validation-for="Firstname" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group col-md-12 mb-4">
-                                        <input asp-for="Lastname" class="form-control input-lg" placeholder="Last Name">
+                                        <input asp-for="Lastname" class="form-control input-lg" placeholder="Last Name" required>
                                         <span asp-validation-for="Lastname" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -44,13 +44,13 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group col-md-12 mb-4">
-                                        <input asp-for="Username" class="form-control input-lg" placeholder="Username">
+                                        <input asp-for="Username" class="form-control input-lg" placeholder="Username" required>
                                         <span asp-validation-for="Username" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group col-md-12 mb-4">
-                                        <input asp-for="Phone" class="form-control input-lg" placeholder="Phone Number">
+                                        <input asp-for="Phone" class="form-control input-lg" placeholder="Phone Number" required>
                                         <span asp-validation-for="Phone" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -61,13 +61,13 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group col-md-12 mb-4">
-                                        <input asp-for="Email" class="form-control input-lg" placeholder="Example@gmail.com">
+                                        <input asp-for="Email" class="form-control input-lg" placeholder="Example@gmail.com" required>
                                         <span asp-validation-for="Email" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group col-md-12 mb-4">
-                                        <input asp-for="Bithdate" class="form-control input-lg" placeholder="Birth Date">
+                                        <input asp-for="Bithdate" class="form-control input-lg" placeholder="Birth Date" required>
                                         <span asp-validation-for="Bithdate" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -79,7 +79,7 @@
                                 <div class="col-6">
                                     <div class="form-group col-md-12 mb-4">
 
-                                        <select asp-for="Genderid" class="form-control input-lg" asp-items="ViewBag.Genderid">
+                                        <select asp-for="Genderid" class="form-control input-lg" asp-items="ViewBag.Genderid" required>
                                             <option value="default" selected>Gender</option>
 
 
@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group col-md-12 ">
-                                        <input asp-for="Upassword" class="form-control input-lg" placeholder="Password">
+                                        <input asp-for="Upassword" class="form-control input-lg" placeholder="Password" required>
                                         <span asp-validation-for="Upassword" class="text-danger"></span>
                                     </div>
                                 </div>

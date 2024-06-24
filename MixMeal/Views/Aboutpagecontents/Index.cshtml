@@ -1,0 +1,67 @@
+﻿@model IEnumerable<MixMeal.Models.Aboutpagecontent>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card card-default">
+    <div class="card-header">
+        <h2>About page contents</h2>
+        <a  asp-action="Create" class="mb-1 btn btn-primary">New Content</a>
+    </div>
+
+    <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Contenttype)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Content)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Position)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Imagepath)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+            @foreach (var item in Model) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Contenttype)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Position)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Imagepath)
+                        </td>
+            
+                            <td>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle icon-burger-mini" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Aboutpagecontentid">Edit</a>
+                                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.Aboutpagecontentid">Details</a>
+                                        <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Aboutpagecontentid">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                    </tr>
+            }
+                </tbody>
+            </table>
+    </div>
+</div>

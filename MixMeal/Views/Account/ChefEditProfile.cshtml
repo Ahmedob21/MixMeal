@@ -1,6 +1,7 @@
 ﻿@model User
 @{
     Layout = "~/Views/Shared/_ChefLayout.cshtml";
+    User image = ViewBag.image;
 }
 
 
@@ -69,6 +70,7 @@
                             <div class="custom-file mb-1">
                                 <input asp-for="ImageFile" class="custom-file-input">
                                 <label asp-for="ImageFile" class="custom-file-label"></label>
+                                <input name="imagepath" class="d-none" value="@image.Imagepath" />
                                 <span asp-validation-for="ImageFile" class="text-danger"></span>
                             </div>
 

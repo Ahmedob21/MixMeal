@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MixMeal.customAuth;
 using MixMeal.Models;
 
 namespace MixMeal.Controllers
@@ -18,14 +19,10 @@ namespace MixMeal.Controllers
             _context = context;
         }
 
-        // GET: Testimonials
-        public async Task<IActionResult> Index()
-        {
-            var modelContext = _context.Testimonials.Include(t => t.Cust).Include(t => t.Testimonialstatus);
-            return View(await modelContext.ToListAsync());
-        }
+
 
         // GET: Testimonials/Details/5
+        [CustomAuthorize(1)] // Admin
         public async Task<IActionResult> Details(decimal? id)
         {
             if (id == null || _context.Testimonials == null)
@@ -34,8 +31,9 @@ namespace MixMeal.Controllers
             }
 
             var testimonial = await _context.Testimonials
-                .Include(t => t.Cust)
+                .Include(t => t.Cust).ThenInclude(u=>u.Role)
                 .Include(t => t.Testimonialstatus)
+                
                 .FirstOrDefaultAsync(m => m.Testumonialid == id);
             if (testimonial == null)
             {
@@ -48,7 +46,7 @@ namespace MixMeal.Controllers
         // GET: Testimonials/Create
         public IActionResult Create()
         {
-            var cust = HttpContext.Session.GetInt32("CustomerSession");
+            var cust = HttpContext.Session.GetInt32("userSession");
             if (cust != null)
             {
                 ViewData["Custid"] = new SelectList(_context.Users, "Userid", "Userid");
@@ -66,10 +64,9 @@ namespace MixMeal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Ucomment")] AddTestimonial addTestimonial)
         {
-            var cust =  HttpContext.Session.GetInt32("CustomerSession");
+            var cust =  HttpContext.Session.GetInt32("userSession");
             var customer = await _context.Users.SingleOrDefaultAsync(customers => customers.Userid == cust);
             
-
             if (ModelState.IsValid)
             {
                     Testimonial testimonial = new Testimonial();
@@ -83,13 +80,10 @@ namespace MixMeal.Controllers
             }
                 
                 return View(addTestimonial);
-
-
-
         }
 
-        
 
+        [CustomAuthorize(1)] // Admin
         // GET: Testimonials/Delete/5   
         public async Task<IActionResult> Delete(decimal? id)
         {
@@ -110,7 +104,8 @@ namespace MixMeal.Controllers
             return View(testimonial);
         }
 
-        // POST: Testimonials
+
+        [CustomAuthorize(1)] // Admin
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(decimal id)
@@ -126,7 +121,7 @@ namespace MixMeal.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Testimonials", "Admin");
         }
 
         private bool TestimonialExists(decimal id)
